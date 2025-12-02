@@ -103,7 +103,7 @@ const AdminSidebar = () => {
   const isActive = (href) => activeRoute === href;
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-80 bg-sidebar text-sidebar-foreground border-r border-sidebar-border flex flex-col z-40 overflow-y-auto scrollbar-hide">
+    <aside className="fixed left-0 top-0 h-screen w-80 bg-linear-to-br from-background via-background to-background/80 text-sidebar-foreground border-r border-sidebar-border flex flex-col z-40 overflow-y-auto scrollbar-hide">
       {/* Logo Section */}
       <div className="sticky top-0 bg-sidebar border-b border-sidebar-border">
         <Logo />

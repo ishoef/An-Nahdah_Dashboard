@@ -2,7 +2,7 @@ import React from "react";
 
 const Logo = () => {
   return (
-    <section className="flex justify-center items-center border-b h-16">
+    <section className="flex justify-start items-center border-b p-4 h-16">
       <div className="flex items-center gap-3">
         <div className="flex items-center justify-center w-12 h-12 rounded-full bg-gray-600 text-white text-xl font-bold shadow-sm">
           I
