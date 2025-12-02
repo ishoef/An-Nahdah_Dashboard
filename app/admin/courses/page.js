@@ -101,7 +101,7 @@ export default function CoursesPage() {
 
   return (
     <DashboardShell>
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/80 p-8">
+      <div className="min-h-screen bg-linear-to-br from-background via-background to-background/80 p-8">
         {/* Header */}
         <div className="mb-8 space-y-4 animate-in fade-in slide-in-from-top-4 duration-500">
           <div className="flex items-center justify-between">
@@ -115,7 +115,7 @@ export default function CoursesPage() {
             </div>
 
             <div className="flex items-center gap-3">
-              <button className="px-6 py-2.5 bg-gradient-to-r from-primary to-primary/90 text-primary-foreground rounded-lg font-medium shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2">
+              <button className="px-6 py-2.5 bg-linear-to-r from-primary to-primary/90 text-primary-foreground rounded-lg font-medium shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2">
                 <Plus className="w-4 h-4" />
                 Create Course
               </button>
@@ -164,7 +164,7 @@ export default function CoursesPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start gap-4">
                     <div
-                      className={`w-12 h-12 rounded-xl bg-gradient-to-br ${course.color} flex-shrink-0 flex items-center justify-center text-white shadow-lg`}
+                      className={`w-12 h-12 rounded-xl bg-linear-to-br ${course.color} shrink-0 flex items-center justify-center text-white shadow-lg`}
                     >
                       <BarChart3 className="w-6 h-6" />
                     </div>
@@ -204,7 +204,7 @@ export default function CoursesPage() {
                     </div>
                     <div className="h-2 bg-muted rounded-full overflow-hidden">
                       <div
-                        className={`h-full rounded-full bg-gradient-to-r ${course.color} transition-all duration-300 group-hover/course:shadow-lg`}
+                        className={`h-full rounded-full bg-linear-to-r ${course.color} transition-all duration-300 group-hover/course:shadow-lg`}
                         style={{ width: `${course.progress}%` }}
                       />
                     </div>
