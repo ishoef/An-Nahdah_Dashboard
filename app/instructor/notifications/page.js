@@ -1,11 +1,136 @@
-import React from 'react';
+"use client";
 
-const Page = () => {
-    return (
-        <div>
-            
+import { useState } from "react";
+import DashboardShell from "@/components/layout/DashobardShell";
+import {
+  Bell,
+  Trash2,
+  MoreVertical,
+  CheckCircle2,
+  AlertCircle,
+} from "lucide-react";
+
+export default function InstructorNotificationsPage() {
+  const [notifications, setNotifications] = useState([
+    {
+      id: 1,
+      type: "student",
+      title: "New Student Enrolled",
+      message:
+        "Fatima Al-Rashid has enrolled in your Tajweed Fundamentals course.",
+      timestamp: "1 hour ago",
+      read: false,
+    },
+    {
+      id: 2,
+      type: "payment",
+      title: "Payment Processed",
+      message: "Your December salary of $3,800 has been processed.",
+      timestamp: "2 hours ago",
+      read: false,
+    },
+    {
+      id: 3,
+      type: "feedback",
+      title: "New Student Review",
+      message: "You received a 5-star review on your Arabic Grammar course.",
+      timestamp: "1 day ago",
+      read: true,
+    },
+    {
+      id: 4,
+      type: "system",
+      title: "Course Material Uploaded",
+      message:
+        "Your course materials for Islamic History have been uploaded successfully.",
+      timestamp: "2 days ago",
+      read: true,
+    },
+  ]);
+
+  const handleDelete = (id) => {
+    setNotifications(notifications.filter((n) => n.id !== id));
+  };
+
+  const getIcon = (type) => {
+    switch (type) {
+      case "student":
+        return <CheckCircle2 className="w-5 h-5 text-blue-600" />;
+      case "payment":
+        return <CheckCircle2 className="w-5 h-5 text-emerald-600" />;
+      case "feedback":
+        return <AlertCircle className="w-5 h-5 text-purple-600" />;
+      case "system":
+        return <CheckCircle2 className="w-5 h-5 text-amber-600" />;
+      default:
+        return <Bell className="w-5 h-5 text-primary" />;
+    }
+  };
+
+  return (
+    <DashboardShell>
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/80 p-8">
+        {/* Header */}
+        <div className="mb-8 animate-in fade-in slide-in-from-top-4 duration-500">
+          <h1 className="text-4xl font-bold text-foreground tracking-tight">
+            Notifications
+          </h1>
+          <p className="text-sm text-muted-foreground mt-2">
+            Your activity and system notifications
+          </p>
         </div>
-    );
-}
 
-export default Page;
+        {/* Notifications List */}
+        <div className="max-w-3xl space-y-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          {notifications.map((notif, idx) => (
+            <div
+              key={notif.id}
+              className={`rounded-xl border transition-all duration-300 p-4 group/notif ${
+                notif.read
+                  ? "border-border bg-card/30 hover:bg-card/50"
+                  : "border-primary/20 bg-primary/5 hover:bg-primary/10"
+              }`}
+              style={{ animationDelay: `${idx * 30}ms` }}
+            >
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0 mt-1">{getIcon(notif.type)}</div>
+
+                <div className="flex-1 min-w-0">
+                  <h3
+                    className={`font-semibold ${
+                      notif.read ? "text-muted-foreground" : "text-foreground"
+                    }`}
+                  >
+                    {notif.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {notif.message}
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    {notif.timestamp}
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2 opacity-0 group-hover/notif:opacity-100 transition-opacity duration-200">
+                  <button
+                    onClick={() => handleDelete(notif.id)}
+                    className="p-2 hover:bg-muted rounded-lg transition-colors duration-200"
+                    title="Delete"
+                  >
+                    <Trash2 className="w-4 h-4 text-muted-foreground hover:text-red-500" />
+                  </button>
+                  <button
+                    className="p-2 hover:bg-muted rounded-lg transition-colors duration-200"
+                    title="More"
+                  >
+                    <MoreVertical className="w-4 h-4 text-muted-foreground" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </DashboardShell>
+  );
+}
