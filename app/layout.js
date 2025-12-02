@@ -1,4 +1,6 @@
+import { TopBar } from "@/components/layout/top-bar";
 import "./globals.css";
+import LeftSidebar from "@/components/layout/left-sidebar";
 
 export const metadata = {
   title: "Create Next App",

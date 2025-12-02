@@ -1,11 +1,8 @@
-import React from 'react';
+import DashboardShell from "@/components/layout/DashobardShell";
+import React from "react";
 
-const Page = () => {
-    return (
-        <div>
-            
-        </div>
-    );
-}
+const NotificationPage = () => {
+  return <DashboardShell>this isthe NotificationPage</DashboardShell>;
+};
 
-export default Page;
+export default NotificationPage;

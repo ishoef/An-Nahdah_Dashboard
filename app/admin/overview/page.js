@@ -1,11 +1,8 @@
-import React from 'react';
+import DashboardShell from "@/components/layout/DashobardShell";
+import React from "react";
 
-const Page = () => {
-    return (
-        <div>
-            
-        </div>
-    );
-}
+const OverviewPage = () => {
+  return <DashboardShell>this is the admin OverviewPage</DashboardShell>;
+};
 
-export default Page;
+export default OverviewPage;

@@ -1,7 +1,7 @@
 "use client";
 
 import { Search, Bell, Settings, ChevronDown, Moon, Sun } from "lucide-react";
-import { useState, useEffect } from "react";
+
 import { Input } from "@/components/ui/input";
 import ThemeToggle from "../ui/Theme-Toggle";
 
@@ -9,7 +9,6 @@ export function TopBar({
   userName = "Dr. Hassan Al-Rashid",
   userRole = "Administrator",
 }) {
-
   return (
     <header className="fixed right-0 top-0 left-80 h-16 bg-card border-b border-border flex items-center justify-between px-6 z-30">
       {/* Search Bar */}
