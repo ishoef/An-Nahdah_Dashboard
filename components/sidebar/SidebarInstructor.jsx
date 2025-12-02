@@ -9,6 +9,8 @@ import {
   Bell,
   Megaphone,
   ChevronRight,
+  User,
+  Users,
 } from "lucide-react";
 import Logo from "../ui/Logo";
 
@@ -35,6 +37,12 @@ const InstructorSidebar = () => {
           label: "Courses",
           href: "/instructor/courses",
           description: "Manage your courses",
+        },
+        {
+          icon: Users,
+          label: "Students",
+          href: "/instructor/students",
+          description: "View your students",
         },
       ],
     },
