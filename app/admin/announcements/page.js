@@ -2,7 +2,11 @@ import DashboardShell from "@/components/layout/DashobardShell";
 import React from "react";
 
 const AnnouncementPage = () => {
-  return <DashboardShell>this is the admin AnnouncementPage</DashboardShell>;
+  return (
+    <DashboardShell>
+      <div className="p-4">this is the admin AnnouncementPage</div>
+    </DashboardShell>
+  );
 };
 
 export default AnnouncementPage;

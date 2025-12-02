@@ -8,7 +8,7 @@ const navigation = [
   { name: "Company", href: "#" },
 ];
 
-export default function Example() {
+export default function LandingPage() {
   return (
     <div className="bg-gray-900 h-screen ">
       <div className="relative isolate lg:px-8">
@@ -32,10 +32,13 @@ export default function Example() {
             <div className="hidden sm:mb-8 sm:flex sm:justify-center">
               <div className="relative rounded-full px-3 py-1 text-sm/6 text-gray-400 ring-1 ring-white/10 hover:ring-white/20">
                 An-Nahdah Online Institute - AOI{" "}
-                <a href="#" className="font-semibold text-indigo-400">
+                <Link
+                  href="https://an-nahdah.vercel.app/"
+                  className="font-semibold text-indigo-400"
+                >
                   <span aria-hidden="true" className="absolute inset-0" />
-                  Go to Website  <span aria-hidden="true">&rarr;</span>
-                </a>
+                  Go to Website <span aria-hidden="true">&rarr;</span>
+                </Link>
               </div>
             </div>
 
