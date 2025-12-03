@@ -13,6 +13,7 @@ import {
   Megaphone,
   ChevronRight,
   CircleDollarSign,
+  Component,
 } from "lucide-react";
 import Logo from "../ui/Logo";
 
@@ -51,6 +52,12 @@ const AdminSidebar = () => {
           label: "Courses",
           href: "/admin/courses",
           description: "Manage courses & content",
+        },
+        {
+          icon: Component,
+          label: "Employees",
+          href: "/admin/employees",
+          description: "Manage employee accounts",
         },
       ],
     },
