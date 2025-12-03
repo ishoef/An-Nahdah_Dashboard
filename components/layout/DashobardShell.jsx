@@ -1,5 +1,5 @@
 import React from "react";
-import { TopBar } from "./top-bar";
+import TopBar from "./top-bar";
 
 const DashboardShell = ({ children }) => {
   return (

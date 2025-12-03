@@ -46,7 +46,7 @@ const stats = [
     icon: DollarSign,
     color: "from-violet-500 to-violet-600",
     lightColor: "bg-violet-100 dark:bg-violet-900/30",
-    link: "/admin/revenue",
+    link: "/admin/revenues",
   },
   {
     id: 4,
