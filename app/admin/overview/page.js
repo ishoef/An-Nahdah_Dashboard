@@ -12,6 +12,7 @@ import {
   Activity,
   Zap,
 } from "lucide-react";
+import Link from "next/link";
 
 const stats = [
   {
@@ -23,6 +24,7 @@ const stats = [
     icon: Users,
     color: "from-blue-500 to-blue-600",
     lightColor: "bg-blue-100 dark:bg-blue-900/30",
+    link: "/admin/students",
   },
   {
     id: 2,
@@ -33,6 +35,7 @@ const stats = [
     icon: BookOpen,
     color: "from-emerald-500 to-emerald-600",
     lightColor: "bg-emerald-100 dark:bg-emerald-900/30",
+    link: "/admin/courses",
   },
   {
     id: 3,
@@ -43,6 +46,7 @@ const stats = [
     icon: DollarSign,
     color: "from-violet-500 to-violet-600",
     lightColor: "bg-violet-100 dark:bg-violet-900/30",
+    link: "/admin/revenue",
   },
   {
     id: 4,
@@ -53,6 +57,7 @@ const stats = [
     icon: BarChart3,
     color: "from-amber-500 to-amber-600",
     lightColor: "bg-amber-100 dark:bg-amber-900/30",
+    link: "/admin/instructors",
   },
 ];
 
@@ -141,8 +146,8 @@ function StatCard({ stat, index }) {
   const Icon = stat.icon;
 
   return (
-    <div
-      className="group relative overflow-hidden rounded-2xl border border-border bg-card/50 p-6 transition-all duration-300 hover:border-primary/50 hover:shadow-xl hover:-translate-y-1 backdrop-blur-sm animate-in fade-in slide-in-from-bottom-4"
+    <Link href={stat.link}
+      className="group relative overflow-hidden rounded-2xl border border-border bg-card/50 p-6 transition-all duration-300 hover:border-primary/50 hover:shadow-xl hover:-translate-y-1 backdrop-blur-sm animate-in fade-in slide-in-from-bottom-4 shadow"
       style={{ animationDelay: `${index * 50}ms` }}
     >
       {/* Animated background gradient */}
@@ -186,7 +191,7 @@ function StatCard({ stat, index }) {
         className={`absolute bottom-0 left-0 h-1 bg-linear-to-r ${stat.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
         style={{ width: "0%", animation: "expandWidth 0.3s ease-out forwards" }}
       />
-    </div>
+    </Link>
   );
 }
 
@@ -272,10 +277,10 @@ export default function OverviewPage() {
             </div>
 
             <div className="flex items-center gap-3">
-              <button className="px-6 py-2.5 bg-linear-to-r from-primary to-primary/90 text-primary-foreground rounded-lg font-medium shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2">
+              <button className="cursor-pointer px-6 py-2.5 bg-linear-to-r from-primary to-primary/90 text-primary-foreground rounded-lg font-medium shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2">
                 <Zap className="w-4 h-4" />+ New Course
               </button>
-              <button className="px-6 py-2.5 border border-border rounded-lg hover:bg-accent transition-all duration-200 font-medium">
+              <button className="cursor-pointer px-6 py-2.5 border border-border rounded-lg hover:bg-accent transition-all duration-200 font-medium">
                 Export
               </button>
             </div>
@@ -295,7 +300,7 @@ export default function OverviewPage() {
           <div className="lg:col-span-2 space-y-8">
             {/* Enrollments Chart */}
             <div
-              className="group relative overflow-hidden rounded-2xl border border-border bg-card/50 p-8 backdrop-blur-sm animate-in fade-in slide-in-from-bottom-4 transition-all duration-300 hover:border-primary/50 hover:shadow-lg"
+              className="group relative overflow-hidden rounded-2xl border border-border bg-card/50 p-8 backdrop-blur-sm animate-in fade-in slide-in-from-bottom-4 transition-all duration-300 hover:border-primary/50 hover:shadow-lg shadow"
               style={{ animationDelay: "200ms" }}
             >
               <div className="absolute inset-0 bg-linear-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -323,7 +328,7 @@ export default function OverviewPage() {
 
             {/* Recent Activity */}
             <div
-              className="rounded-2xl border border-border bg-card/50 p-8 backdrop-blur-sm animate-in fade-in slide-in-from-bottom-4 transition-all duration-300 hover:border-primary/50 hover:shadow-lg"
+              className="rounded-2xl border border-border bg-card/50 p-8 backdrop-blur-sm animate-in fade-in slide-in-from-bottom-4 transition-all duration-300 hover:border-primary/50 hover:shadow-lg shadow "
               style={{ animationDelay: "250ms" }}
             >
               <h3 className="text-lg font-bold text-foreground mb-6">
@@ -362,7 +367,7 @@ export default function OverviewPage() {
 
             {/* Top Courses */}
             <div
-              className="rounded-2xl border border-border bg-card/50 p-8 backdrop-blur-sm animate-in fade-in slide-in-from-bottom-4 transition-all duration-300 hover:border-primary/50 hover:shadow-lg"
+              className="rounded-2xl border border-border bg-card/50 p-8 backdrop-blur-sm animate-in fade-in slide-in-from-bottom-4 transition-all duration-300 hover:border-primary/50 hover:shadow-lg shadow "
               style={{ animationDelay: "300ms" }}
             >
               <h3 className="text-lg font-bold text-foreground mb-6">
@@ -403,7 +408,7 @@ export default function OverviewPage() {
           <div className="space-y-8">
             {/* Upcoming Classes */}
             <div
-              className="rounded-2xl border border-border bg-card/50 p-6 backdrop-blur-sm animate-in fade-in slide-in-from-right-4 transition-all duration-300 hover:border-primary/50 hover:shadow-lg"
+              className="rounded-2xl border border-border bg-card/50 p-6 backdrop-blur-sm animate-in fade-in slide-in-from-right-4 transition-all duration-300 hover:border-primary/50 hover:shadow-lg shadow"
               style={{ animationDelay: "200ms" }}
             >
               <h3 className="text-lg font-bold text-foreground mb-5">
@@ -444,7 +449,7 @@ export default function OverviewPage() {
 
             {/* Active Users */}
             <div
-              className="rounded-2xl border border-border bg-card/50 p-6 backdrop-blur-sm animate-in fade-in slide-in-from-right-4 transition-all duration-300 hover:border-primary/50 hover:shadow-lg"
+              className="rounded-2xl border border-border bg-card/50 p-6 backdrop-blur-sm animate-in fade-in slide-in-from-right-4 transition-all duration-300 hover:border-primary/50 hover:shadow-lg shadow"
               style={{ animationDelay: "250ms" }}
             >
               <h3 className="text-lg font-bold text-foreground mb-5">
@@ -481,7 +486,7 @@ export default function OverviewPage() {
 
             {/* Quick Actions */}
             <div
-              className="rounded-2xl border border-border bg-card/50 p-6 backdrop-blur-sm animate-in fade-in slide-in-from-right-4 transition-all duration-300 hover:border-primary/50 hover:shadow-lg"
+              className="rounded-2xl border border-border bg-card/50 p-6 backdrop-blur-sm animate-in fade-in slide-in-from-right-4 transition-all duration-300 hover:border-primary/50 hover:shadow-lg shadow"
               style={{ animationDelay: "300ms" }}
             >
               <h3 className="text-lg font-bold text-foreground mb-5">

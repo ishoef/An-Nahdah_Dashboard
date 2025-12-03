@@ -12,6 +12,7 @@ import {
   FileText,
   Megaphone,
   ChevronRight,
+  CircleDollarSign,
 } from "lucide-react";
 import Logo from "../ui/Logo";
 
@@ -57,16 +58,33 @@ const AdminSidebar = () => {
       label: "Operations",
       items: [
         {
+          icon: Mail,
+          label: "Email Send",
+          href: "/admin/email",
+          description: "Send bulk emails",
+        },
+      ],
+    },
+    {
+      label: "Finance",
+      items: [
+        {
           icon: DollarSign,
           label: "Salaries",
           href: "/admin/salaries",
           description: "Salary management",
         },
         {
-          icon: Mail,
-          label: "Email Send",
-          href: "/admin/email",
-          description: "Send bulk emails",
+          icon: CircleDollarSign,
+          label: "Revenues",
+          href: "/admin/revenues",
+          description: "View revenue strmeams",
+        },
+        {
+          icon: BarChart3,
+          label: "Course Profitability",
+          href: "/admin/course-profitability",
+          description: "Revenue minus all course costs",
         },
       ],
     },
@@ -87,6 +105,7 @@ const AdminSidebar = () => {
         },
       ],
     },
+
     {
       label: "Analytics",
       items: [
