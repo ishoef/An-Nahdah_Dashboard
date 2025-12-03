@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 /* @import "tw-animate-css"; */
 
@@ -16,6 +17,14 @@
   --color-nhd-800: #225168;
   --color-nhd-900: #204459;
   --color-nhd-950: #102b3c;
+}
+
+@theme {
+  --font-siliguri-light: "Hind Siliguri", sans-serif;
+  --font-siliguri-regular: "Hind Siliguri", sans-serif;
+  --font-siliguri-medium: "Hind Siliguri", sans-serif;
+  --font-siliguri-semibold: "Hind Siliguri", sans-serif;
+  --font-siliguri-bold: "Hind Siliguri", sans-serif;
 }
 
 @theme inline {

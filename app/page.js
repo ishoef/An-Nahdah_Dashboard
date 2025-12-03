@@ -10,7 +10,7 @@ const navigation = [
 
 export default function LandingPage() {
   return (
-    <div className="bg-gray-900 h-screen ">
+    <div className="bg-gray-900 h-screen font-siliguri-medium">
       <div className="relative isolate lg:px-8">
         {/* Back Light Shadow */}
         <div
@@ -36,31 +36,36 @@ export default function LandingPage() {
                   href="https://an-nahdah.vercel.app/"
                   className="font-semibold text-indigo-400"
                 >
-                  <span aria-hidden="true" className="absolute inset-0" />
-                  Go to Website <span aria-hidden="true">&rarr;</span>
+                  <span aria-hidden="true" className="absolute  inset-0" />
+                  ওয়েবসাইটে যাও <span aria-hidden="true">&rarr;</span>
                 </Link>
               </div>
             </div>
 
-            <h1 className="text-5xl font-semibold tracking-tight text-balance text-white sm:text-7xl">
-              Data to enrich your online business
+            <h1 className="text-5xl font-siliguri-medium font-semibold tracking-tight text-balance text-white sm:text-7xl">
+              Nahdah's Backworld
             </h1>
-            <p className="mt-8 text-lg font-medium text-pretty text-gray-400 sm:text-xl/8">
-              Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
-              lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat.
+            <h1 className="text-5xl font-siliguri-medium font-semibold tracking-tight text-balance text-white sm:text-7xl">
+              এ তোমাকে স্বাগতম
+            </h1>
+            <p className="mt-8 font-siliguri-medium text-lg font-medium text-pretty text-gray-400 sm:text-xl/8">
+              এখানে অ্যাডমিন ও ইনস্ট্রাক্টররা কোর্স, শিক্ষার্থী ও
+              রিপোর্ট দ্রুতভাবে পরিচালনা করতে পারবেন। পাঠ, রোল, উপস্থিতি ও
+              নোটিফিকেশন সবই এক জায়গায়; আপনার কাজ হবে আরও দ্রুত ও কার্যকর।
             </p>
+
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <Link
                 href="/admin"
                 className="rounded-md bg-nhd-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-nhd-400 focus-visible:outline-2"
               >
-                Admin Dashboard
+                এডমিন ড্যাশবোর্ড
               </Link>
               <Link
                 href="/instructor"
-                className="rounded-md bg-transparent border px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg- focus-visible:outline-2"
+                className="rounded-md bg-transparent border hover:border-nhd-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg- focus-visible:outline-2"
               >
-                Instructor Dashboard
+                ইন্সট্রাক্টর ড্যাশবোর্ড
               </Link>
             </div>
           </div>

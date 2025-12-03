@@ -1,5 +1,4 @@
 import React from "react";
-import LeftSidebar from "./left-sidebar";
 import { TopBar } from "./top-bar";
 
 const DashboardShell = ({ children }) => {
