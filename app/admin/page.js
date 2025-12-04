@@ -6,24 +6,17 @@ import {
   Users,
   BookOpen,
   DollarSign,
-  BarChart3,
   ArrowUpRight,
-  Activity,
-  Zap,
   Sun,
   Moon,
-  Cloud,
-  CloudRain,
-  Calendar,
   Clock,
   Gift,
   Heart,
-  MessageCircle,
   HelpCircle,
-  ChevronRight,
   Globe,
   MapPin,
   Sparkles,
+  CheckCircle,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
@@ -135,7 +128,7 @@ export default function UltimateOverview() {
         className={`min-h-screen transition-all duration-500 ${
           isDark
             ? "bg-slate-950"
-            : "bg-gradient-to-br from-slate-50 via-white to-slate-100"
+            : "bg-linear-to-br from-slate-50 via-white to-slate-100"
         }`}
       >
         {/* Floating Dark Mode Toggle */}
@@ -159,7 +152,7 @@ export default function UltimateOverview() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center"
           >
-            <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-[#206380] via-[#1e5a72] to-[#206380] bg-clip-text text-transparent">
+            <h1 className="text-5xl md:text-7xl font-bold bg-linear-to-r from-nhd-700  via-[#1e5a72] to-nhd-700  bg-clip-text text-transparent">
               Assalamu Alaikum wa Rahmatullah
             </h1>
             <p className="text-xl mt-4 text-gray-600 dark:text-gray-400">
@@ -171,7 +164,7 @@ export default function UltimateOverview() {
                 day: "numeric",
               })}
             </p>
-            <p className="text-lg font-medium text-[#206380] mt-2">
+            <p className="text-lg font-medium text-nhd-700  mt-2">
               {hijriDate}
             </p>
           </motion.div>
@@ -185,11 +178,11 @@ export default function UltimateOverview() {
             >
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-2xl font-bold flex items-center gap-3">
-                  <Clock className="w-8 h-8 text-[#206380]" /> Live Time
+                  <Clock className="w-8 h-8 text-nhd-700 " /> Live Time
                 </h3>
                 <MapPin className="w-5 h-5 text-gray-500" />
               </div>
-              <p className="text-5xl font-bold text-[#206380]">
+              <p className="text-5xl font-bold text-nhd-700 ">
                 {time.toLocaleTimeString("en-US", {
                   hour: "2-digit",
                   minute: "2-digit",
@@ -213,7 +206,7 @@ export default function UltimateOverview() {
                 {Object.entries(prayerTimes).map(([name, t]) => (
                   <div
                     key={name}
-                    className="text-center p-3 rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/50"
+                    className="text-center p-3 rounded-xl bg-linear-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/50"
                   >
                     <p className="font-semibold text-emerald-700 dark:text-emerald-400">
                       {name}
@@ -228,7 +221,7 @@ export default function UltimateOverview() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
-              className="bg-gradient-to-br from-amber-500 to-orange-600 rounded-3xl p-8 text-white shadow-2xl"
+              className="bg-linear-to-br from-amber-500 to-orange-600 rounded-3xl p-8 text-white shadow-2xl"
             >
               <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
                 <Sparkles className="w-8 h-8" /> Daily Quran Verse
@@ -258,11 +251,11 @@ export default function UltimateOverview() {
                   className="group relative bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-3xl shadow-xl p-8 border border-white/20 hover:shadow-2xl transition-all duration-500 overflow-hidden"
                 >
                   <div
-                    className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-20 transition-opacity`}
+                    className={`absolute inset-0 bg-linear-to-br ${stat.color} opacity-0 group-hover:opacity-20 transition-opacity`}
                   />
                   <div className="relative z-10">
                     <div
-                      className={`p-4 rounded-2xl bg-gradient-to-br ${stat.color} text-white shadow-lg inline-block mb-4`}
+                      className={`p-4 rounded-2xl bg-linear-to-br ${stat.color} text-white shadow-lg inline-block mb-4`}
                     >
                       <Icon className="w-8 h-8" />
                     </div>
@@ -326,7 +319,7 @@ export default function UltimateOverview() {
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
-                    <p className="text-4xl font-bold text-[#206380]">$18,420</p>
+                    <p className="text-4xl font-bold text-nhd-700 ">$18,420</p>
                     <p className="text-sm text-gray-500">Total This Month</p>
                   </div>
                 </div>
@@ -336,7 +329,7 @@ export default function UltimateOverview() {
                   <div key={i} className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div
-                        className={`w-4 h-4 rounded-full bg-gradient-to-br ${item.color}`}
+                        className={`w-4 h-4 rounded-full bg-linear-to-br ${item.color}`}
                       />
                       <span className="font-medium">{item.name}</span>
                     </div>
@@ -349,7 +342,7 @@ export default function UltimateOverview() {
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
-              className="bg-gradient-to-br from-pink-500 via-rose-500 to-red-500 rounded-3xl p-8 text-white shadow-2xl"
+              className="bg-linear-to-br from-pink-500 via-rose-500 to-red-500 rounded-3xl p-8 text-white shadow-2xl"
             >
               <h3 className="text-3xl font-bold mb-6 flex items-center gap-4">
                 <Gift className="w-10 h-10" /> Student Birthdays Today
@@ -382,7 +375,7 @@ export default function UltimateOverview() {
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-3xl p-8 text-white shadow-2xl"
+            className="bg-linear-to-r from-emerald-500 to-teal-600 rounded-3xl p-8 text-white shadow-2xl"
           >
             <h3 className="text-3xl font-bold mb-6">Zakat Calculator</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -407,7 +400,7 @@ export default function UltimateOverview() {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 1 }}
-            className="fixed bottom-8 right-8 p-6 bg-gradient-to-br from-[#206380] to-[#1e5a72] text-white rounded-full shadow-2xl hover:shadow-3xl transition-all z-50 flex items-center gap-3"
+            className="fixed bottom-8 right-8 p-6 bg-linear-to-br from-nhd-700  to-[#1e5a72] text-white rounded-full shadow-2xl hover:shadow-3xl transition-all z-50 flex items-center gap-3"
             onClick={() =>
               toast.success("As-salamu alaikum! How can we assist you today?")
             }
