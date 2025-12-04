@@ -9,8 +9,9 @@ import {
   Bell,
   Megaphone,
   ChevronRight,
-  User,
   Users,
+  CircleSlash2,
+  ChartNoAxesCombined,
 } from "lucide-react";
 import Logo from "../ui/Logo";
 
@@ -38,11 +39,28 @@ const InstructorSidebar = () => {
           href: "/instructor/courses",
           description: "Manage your courses",
         },
+      ],
+    },
+    {
+      label: "Management",
+      items: [
         {
           icon: Users,
           label: "Students",
           href: "/instructor/students",
           description: "View your students",
+        },
+        {
+          icon: CircleSlash2,
+          label: "Attendance",
+          href: "/instructor/attendance",
+          description: "Manage attendance records",
+        },
+        {
+          icon: ChartNoAxesCombined,
+          label: "Student Progress",
+          href: "/instructor/studentProgress",
+          description: "Track student progress",
         },
       ],
     },

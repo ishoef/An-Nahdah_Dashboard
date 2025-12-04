@@ -356,7 +356,7 @@ export default function InstructorStudentsPage() {
                     {/* Your original card content - 100% unchanged */}
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-full bg-linear-to-br from-primary/20 to-primary/10 flex items-center justify-center flex-shrink-0">
+                        <div className="w-12 h-12 rounded-full bg-linear-to-br from-primary/20 to-primary/10 flex items-center justify-center shrink-0">
                           <span className="text-sm font-bold text-primary">
                             {student.name
                               .split(" ")
