@@ -262,7 +262,7 @@ export default function InstructorsPage() {
           <div className="flex items-center gap-4">
             <button
               onClick={() => setShowAddModal(true)}
-              className="px-4 py-2.5 bg-gradient-to-r from-nhd-700accent-nhd-700 to-[#1b5666] text-white rounded-md font-medium shadow-md hover:shadow-lg hover:brightness-105 transition-all flex items-center gap-2"
+              className="px-4 py-2.5 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-md font-medium shadow-md hover:shadow-lg hover:brightness-105 transition-all flex items-center gap-2"
             >
               <Plus className="w-4 h-4" /> Add Instructor
             </button>
@@ -326,13 +326,13 @@ export default function InstructorsPage() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search by name or email..."
-              className="pl-10 pr-4 py-2.5 rounded-md border border-border bg-background text-sm w-full focus:outline-none focus:ring-2 focus:ring-nhd-700accent-nhd-700/50 transition"
+              className="pl-10 pr-4 py-2.5 rounded-md border border-border bg-background text-sm w-full focus:outline-none focus:ring-2 focus:ring-[#206380]/50 transition"
             />
           </div>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-2.5 rounded-md border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-nhd-700accent-nhd-700/50 transition"
+            className="px-4 py-2.5 rounded-md border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-[#206380]/50 transition"
           >
             <option value="all">All Status</option>
             <option value="active">Active</option>
@@ -343,7 +343,7 @@ export default function InstructorsPage() {
               onClick={() => setViewMode("table")}
               className={`p-2 rounded-sm transition ${
                 viewMode === "table"
-                  ? "bg-nhd-700accent-nhd-700 text-white"
+                  ? "bg-[#206380] text-white"
                   : "hover:bg-muted"
               }`}
             >
@@ -353,7 +353,7 @@ export default function InstructorsPage() {
               onClick={() => setViewMode("grid")}
               className={`p-2 rounded-sm transition ${
                 viewMode === "grid"
-                  ? "bg-nhd-700accent-nhd-700 text-white"
+                  ? "bg-[#206380] text-white"
                   : "hover:bg-muted"
               }`}
             >
@@ -546,7 +546,7 @@ function InstructorTable({
                   instructors.length > 0
                 }
                 onChange={onToggleSelectAll}
-                className="rounded border-border accent-nhd-700"
+                className="rounded border-border accent-[#206380]"
               />
             </th>
             <th
@@ -612,7 +612,7 @@ function InstructorTable({
                   type="checkbox"
                   checked={selectedIds.includes(i.id)}
                   onChange={() => onToggleSelect(i.id)}
-                  className="rounded border-border accent-nhd-700"
+                  className="rounded border-border accent-[#206380]"
                 />
               </td>
               <td className="px-6 py-4 font-medium">{i.name}</td>
@@ -666,7 +666,7 @@ function InstructorGrid({ instructors, onView, onEdit, onDelete }) {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="rounded-2xl border border-border bg-card/50 backdrop-blur-sm p-6 hover:border-nhd-700accent-nhd-700/50 hover:shadow-lg transition-all"
+            className="rounded-2xl border border-border bg-card/50 backdrop-blur-sm p-6 hover:border-[#206380]/50 hover:shadow-lg transition-all"
           >
             <div className="flex items-start justify-between mb-4">
               <h3 className="text-lg font-semibold text-foreground">
@@ -708,7 +708,7 @@ function InstructorGrid({ instructors, onView, onEdit, onDelete }) {
               </button>
               <button
                 onClick={() => onEdit(i)}
-                className="flex-1 px-4 py-2 text-sm font-medium bg-gradient-to-r from-nhd-700accent-nhd-700 to-[#1b5666] text-white rounded-md hover:shadow-md transition flex items-center gap-2 justify-center"
+                className="flex-1 px-4 py-2 text-sm font-medium bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-md hover:shadow-md transition flex items-center gap-2 justify-center"
               >
                 <Edit2 className="w-4 h-4" /> Edit
               </button>
@@ -880,7 +880,7 @@ function AddEditModal({ instructor, onClose, onSave }) {
             </button>
             <button
               onClick={handleSubmit}
-              className="px-6 py-2 bg-gradient-to-r from-nhd-700accent-nhd-700 to-[#1b5666] text-white rounded-md flex items-center gap-2"
+              className="px-6 py-2 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-md flex items-center gap-2"
             >
               <CheckCircle className="w-4 h-4" /> Save
             </button>
@@ -955,7 +955,7 @@ function ViewModal({ instructor, onClose }) {
           <div className="mt-8 flex justify-end">
             <button
               onClick={onClose}
-              className="px-6 py-3 bg-gradient-to-r from-nhd-700accent-nhd-700 to-[#1b5666] text-white rounded-lg font-medium"
+              className="px-6 py-3 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-lg font-medium"
             >
               Close
             </button>
@@ -1058,7 +1058,7 @@ function BulkConfirm({ action, count, onClose, onConfirm }) {
               </button>
               <button
                 onClick={onConfirm}
-                className="px-6 py-3 bg-gradient-to-r from-nhd-700accent-nhd-700 to-[#1b5666] text-white rounded-lg font-medium hover:shadow-lg transition"
+                className="px-6 py-3 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-lg font-medium hover:shadow-lg transition"
               >
                 Confirm
               </button>

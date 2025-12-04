@@ -3,603 +3,482 @@
 import { useState, useEffect, useRef } from "react";
 import DashboardShell from "@/components/layout/DashobardShell";
 import {
-  AlertCircle,
-  Archive,
-  ArrowBigDown,
   Bell,
   CheckCircle2,
-  EyeOff,
-  MoreVertical,
-  SearchIcon,
+  AlertCircle,
+  Archive,
   Trash2,
-  
+  Search,
+  Filter,
+  MoreVertical,
+  X,
+  Inbox,
+  Clock,
+  AlertTriangle,
+  Package,
+  Users,
+  DollarSign,
+  Settings,
+  RefreshCw,
 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import toast, { Toaster } from "react-hot-toast";
 
-/**
- * NotificationsPage (enhanced)
- *
- * Added: search, tabs, bulk actions, mark all read, clear read, undo delete,
- * pagination (load more), unread counter, empty state.
- *
- * Keep styles and animations aligned with your original design.
- */
+const PRIMARY = "#206380";
 
 export default function NotificationsPage() {
-  // initial data (same as before)
-  const initial = [
+  const [notifications, setNotifications] = useState([
     {
       id: 1,
       type: "system",
       title: "System Update Completed",
-      message: "The academy system has been updated successfully.",
-      timestamp: "2 hours ago",
+      message: "Platform upgraded to v3.2.1 with performance improvements.",
+      time: "2 hours ago",
       read: false,
     },
     {
       id: 2,
-      type: "course",
-      title: "New Student Enrollment",
-      message: "Ahmed has enrolled in Tajweed Fundamentals course.",
-      timestamp: "4 hours ago",
+      type: "enrollment",
+      title: "New Student Enrolled",
+      message: "Ahmed Khalid joined Tajweed Fundamentals",
+      time: "4 hours ago",
       read: false,
     },
     {
       id: 3,
       type: "payment",
-      title: "Payment Processed",
-      message: "Monthly salaries have been processed successfully.",
-      timestamp: "1 day ago",
+      title: "Instructor Payroll Processed",
+      message: "December salaries sent to all instructors",
+      time: "1 day ago",
       read: true,
     },
     {
       id: 4,
       type: "warning",
-      title: "Low Course Enrollment",
-      message: "Islamic History Part 1 has low enrollment rates.",
-      timestamp: "2 days ago",
-      read: true,
+      title: "Low Enrollment Alert",
+      message: "Islamic History Part 1 has only 12 students",
+      time: "2 days ago",
+      read: false,
     },
-    // add more sample items to better demo pagination
     {
       id: 5,
       type: "course",
       title: "New Lesson Published",
-      message: "Lesson 6 for Tajweed has been published.",
-      timestamp: "3 days ago",
-      read: false,
+      message: "Lesson 8: Advanced Tajweed Rules is now live",
+      time: "3 days ago",
+      read: true,
     },
     {
       id: 6,
-      type: "system",
-      title: "Backup Completed",
-      message: "Daily backup finished without errors.",
-      timestamp: "4 days ago",
+      type: "backup",
+      title: "Daily Backup Complete",
+      message: "All data successfully backed up at 02:00 AM",
+      time: "4 days ago",
       read: true,
     },
     {
       id: 7,
       type: "warning",
-      title: "Server CPU High",
-      message: "CPU utilization spiked above threshold.",
-      timestamp: "5 days ago",
+      title: "High Server Load",
+      message: "CPU usage exceeded 90% for 10 minutes",
+      time: "5 days ago",
       read: false,
     },
-  ];
+  ]);
 
-  const [notifications, setNotifications] = useState(initial);
-  const [query, setQuery] = useState("");
-  const [tab, setTab] = useState("all"); // all, unread, read
-  const [selected, setSelected] = useState([]); // ids
-  const [pageSize, setPageSize] = useState(5);
-  const [undoStack, setUndoStack] = useState(null); // { action, data, timeoutId }
-  const undoTimerRef = useRef(null);
-
-  useEffect(() => {
-    return () => {
-      if (undoTimerRef.current) clearTimeout(undoTimerRef.current);
-    };
-  }, []);
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("all"); // all, unread, system, enrollment, payment, warning
+  const [selected, setSelected] = useState([]);
+  const [visibleCount, setVisibleCount] = useState(6);
+  const undoRef = useRef(null);
 
   const unreadCount = notifications.filter((n) => !n.read).length;
 
-  // filters
   const filtered = notifications
     .filter((n) => {
-      if (tab === "unread") return !n.read;
-      if (tab === "read") return n.read;
+      if (filter === "unread") return !n.read;
+      if (filter !== "all" && filter !== "unread") return n.type === filter;
       return true;
     })
-    .filter((n) => {
-      if (!query) return true;
-      const q = query.toLowerCase();
-      return (
-        n.title.toLowerCase().includes(q) || n.message.toLowerCase().includes(q)
-      );
-    });
+    .filter(
+      (n) =>
+        n.title.toLowerCase().includes(search.toLowerCase()) ||
+        n.message.toLowerCase().includes(search.toLowerCase())
+    );
 
-  const page = filtered.slice(0, pageSize);
+  const visibleNotifications = filtered.slice(0, visibleCount);
 
-  // icons
   const getIcon = (type) => {
-    switch (type) {
-      case "system":
-        return <CheckCircle2 className="w-5 h-5 text-blue-600" />;
-      case "course":
-        return <AlertCircle className="w-5 h-5 text-purple-600" />;
-      case "payment":
-        return <CheckCircle2 className="w-5 h-5 text-emerald-600" />;
-      case "warning":
-        return <AlertCircle className="w-5 h-5 text-amber-600" />;
-      default:
-        return <Bell className="w-5 h-5 text-primary" />;
-    }
+    const map = {
+      system: <RefreshCw className="w-5 h-5" />,
+      enrollment: <Users className="w-5 h-5" />,
+      payment: <DollarSign className="w-5 h-5" />,
+      warning: <AlertTriangle className="w-5 h-5" />,
+      course: <Package className="w-5 h-5" />,
+      backup: <Archive className="w-5 h-5" />,
+    };
+    return map[type] || <Bell className="w-5 h-5" />;
   };
 
-  // basic actions
-  const handleDelete = (id) => {
-    const removed = notifications.find((n) => n.id === id);
-    const remaining = notifications.filter((n) => n.id !== id);
-    setNotifications(remaining);
+  const getColor = (type) => {
+    const colors = {
+      system: "from-blue-500 to-cyan-500",
+      enrollment: "from-emerald-500 to-teal-500",
+      payment: "from-green-500 to-emerald-500",
+      warning: "from-orange-500 to-red-500",
+      course: "from-purple-500 to-indigo-500",
+      backup: "from-gray-500 to-slate-500",
+    };
+    return colors[type] || "from-blue-500 to-indigo-500";
+  };
 
-    pushUndo({
-      action: "delete",
-      data: removed,
+  const markAsRead = (id) => {
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
+    );
+  };
+
+  const deleteNotification = (id) => {
+    const notif = notifications.find((n) => n.id === id);
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
+    showUndo("Notification deleted", () => {
+      setNotifications((prev) => [...prev, notif]);
     });
   };
-
-  const handleArchive = (id) => {
-    setNotifications(
-      notifications.map((n) => (n.id === id ? { ...n, read: true } : n))
-    );
-  };
-
-  const handleMarkRead = (id) => {
-    setNotifications(
-      notifications.map((n) => (n.id === id ? { ...n, read: true } : n))
-    );
-  };
-
-  // bulk actions
-  const toggleSelect = (id) =>
-    setSelected((s) =>
-      s.includes(id) ? s.filter((x) => x !== id) : [...s, id]
-    );
-
-  const selectAllOnPage = () => setSelected(page.map((p) => p.id));
-
-  const clearSelection = () => setSelected([]);
 
   const bulkDelete = () => {
-    if (selected.length === 0) return;
     const removed = notifications.filter((n) => selected.includes(n.id));
-    const remaining = notifications.filter((n) => !selected.includes(n.id));
-    setNotifications(remaining);
+    setNotifications((prev) => prev.filter((n) => !selected.includes(n.id)));
     setSelected([]);
-    pushUndo({ action: "bulkDelete", data: removed });
+    showUndo(`${removed.length} notifications deleted`, () => {
+      setNotifications((prev) => [...removed, ...prev]);
+    });
   };
 
-  const bulkMarkRead = () => {
-    if (selected.length === 0) return;
-    setNotifications(
-      notifications.map((n) =>
-        selected.includes(n.id) ? { ...n, read: true } : n
-      )
-    );
-    setSelected([]);
-  };
-
-  // helper: mark all read
-  const markAllRead = () =>
+  const markAllRead = () => {
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-
-  const clearAllRead = () =>
-    setNotifications((prev) => prev.filter((n) => !n.read));
-
-  // pagination
-  const loadMore = () => setPageSize((s) => s + 5);
-
-  // undo mechanism
-  const pushUndo = (payload) => {
-    // clear previous timer
-    if (undoTimerRef.current) {
-      clearTimeout(undoTimerRef.current);
-      setUndoStack(null);
-    }
-
-    // show undo for 6s
-    const timeoutId = setTimeout(() => {
-      setUndoStack(null);
-      undoTimerRef.current = null;
-    }, 6000);
-
-    undoTimerRef.current = timeoutId;
-    setUndoStack({ ...payload, timeoutId });
+    toast.success("All notifications marked as read");
   };
 
-  const handleUndo = () => {
-    if (!undoStack) return;
-    if (undoTimerRef.current) {
-      clearTimeout(undoTimerRef.current);
-      undoTimerRef.current = null;
-    }
-
-    if (undoStack.action === "delete") {
-      setNotifications((prev) => [undoStack.data, ...prev]);
-    } else if (undoStack.action === "bulkDelete") {
-      setNotifications((prev) => [...undoStack.data, ...prev]);
-    }
-
-    setUndoStack(null);
+  const showUndo = (message, action) => {
+    if (undoRef.current) toast.dismiss(undoRef.current);
+    undoRef.current = toast(
+      <div className="flex items-center gap-4">
+        <span>{message}</span>
+        <button
+          onClick={() => {
+            action();
+            toast.dismiss(undoRef.current);
+          }}
+          className="px-3 py-1 bg-white text-black rounded text-sm font-medium"
+        >
+          Undo
+        </button>
+      </div>,
+      { duration: 5000, position: "bottom-right" }
+    );
   };
 
-  // small helpers for UI
-  const isSelected = (id) => selected.includes(id);
+  const toggleSelect = (id) => {
+    setSelected((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
+  };
+
+  const selectAllVisible = () => {
+    const visibleIds = visibleNotifications.map((n) => n.id);
+    setSelected((prev) =>
+      prev.length === visibleIds.length ? [] : visibleIds
+    );
+  };
 
   return (
     <DashboardShell>
-      <div className="min-h-screen p-6 md:p-8">
-        <div className=" mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* ========== LEFT (Main) - spans 3 cols on lg ========== */}
-          <div className="lg:col-span-3">
-            {/* Header */}
-            <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div>
-                <h1 className="flex items-center gap-3 text-2xl md:text-3xl font-semibold text-foreground">
-                  <Bell className="w-6 h-6 text-primary" />
-                  Notifications
-                  <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
-                    {unreadCount} unread
+      <Toaster position="bottom-right" />
+      <div className="min-h-screen p-6 md:p-10">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-10"
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-4xl font-bold text-foreground flex items-center gap-4">
+                <Bell className="w-10 h-10 text-[#206380]" />
+                Notifications
+                {unreadCount > 0 && (
+                  <span className="ml-3 px-3 py-1 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white text-sm font-bold rounded-full">
+                    {unreadCount} Unread
                   </span>
-                </h1>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  System and activity alerts — quick actions available on hover.
-                </p>
-              </div>
-
-              {/* compact toolbar */}
-              <div className="flex items-center gap-3">
-                <div className="relative">
-                  <input
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Search notifications..."
-                    className="pl-10 pr-3 py-2 rounded-lg border border-border bg-card text-sm w-56 focus:outline-none focus:ring-2 focus:ring-primary/20"
-                    aria-label="Search notifications"
-                  />
-                  <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                    <SearchIcon className="w-4 h-4" />
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={markAllRead}
-                    className="inline-flex items-center gap-2 px-3 py-2 rounded-md bg-primary text-white text-sm shadow-sm hover:brightness-95"
-                    title="Mark all as read"
-                  >
-                    <ArrowBigDown className="w-4 h-4" />
-                    Mark all
-                  </button>
-
-                  <button
-                    onClick={clearAllRead}
-                    className="px-3 py-2 rounded-md border border-border text-sm hover:bg-muted"
-                    title="Clear read"
-                  >
-                    Clear read
-                  </button>
-                </div>
-              </div>
+                )}
+              </h1>
+              <p className="text-muted-foreground mt-3 text-lg">
+                Stay updated with system alerts, enrollments, payments, and more
+              </p>
             </div>
+            <button
+              onClick={markAllRead}
+              className="px-6 py-3 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-xl font-medium flex items-center gap-3 hover:shadow-lg transition"
+            >
+              <CheckCircle2 className="w-5 h-5" />
+              Mark All Read
+            </button>
+          </div>
+        </motion.div>
 
-            {/* Tabs (segmented control) */}
-            <div className="mb-4 flex items-center justify-between gap-3">
-              <div className="inline-flex bg-card rounded-md p-1 border border-border">
-                {["all", "unread", "read"].map((t) => (
-                  <button
-                    key={t}
-                    onClick={() => {
-                      setTab(t);
-                      setSelected([]);
-                    }}
-                    className={`px-3 py-1 rounded-md text-sm font-medium transition ${
-                      tab === t
-                        ? "bg-primary text-white shadow-sm"
-                        : "text-muted-foreground hover:bg-muted"
-                    }`}
-                    aria-pressed={tab === t}
-                  >
-                    {t === "all" ? "All" : t === "unread" ? "Unread" : "Read"}
-                  </button>
-                ))}
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
+          {/* Main List */}
+          <div className="xl:col-span-3 space-y-6">
+            {/* Search & Filters */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="flex flex-col md:flex-row gap-4"
+            >
+              <div className="relative flex-1">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <input
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search notifications..."
+                  className="pl-12 pr-5 py-4 w-full rounded-xl border bg-card focus:ring-2 focus:ring-[#206380]/50 transition"
+                />
               </div>
+              <div className="flex gap-3">
+                <select
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                  className="px-5 py-4 rounded-xl border bg-card"
+                >
+                  <option value="all">All Notifications</option>
+                  <option value="unread">Unread Only</option>
+                  <option value="system">System</option>
+                  <option value="enrollment">Enrollments</option>
+                  <option value="payment">Payments</option>
+                  <option value="warning">Warnings</option>
+                </select>
+              </div>
+            </motion.div>
 
-              <div className="flex items-center gap-3">
-                <label className="flex items-center gap-2 text-sm text-muted-foreground select-none">
-                  <input
-                    type="checkbox"
-                    checked={
-                      page.length > 0 &&
-                      page.every((p) => selected.includes(p.id))
-                    }
-                    onChange={(e) => {
-                      if (e.target.checked) selectAllOnPage();
-                      else clearSelection();
-                    }}
-                    className="w-4 h-4"
-                    title="Select all on page"
-                  />
-                  Select
-                </label>
-
-                <div className="flex items-center gap-2">
+            {/* Selection Toolbar */}
+            {selected.length > 0 && (
+              <motion.div
+                initial={{ y: -10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                className="p-5 bg-card border rounded-xl flex items-center justify-between shadow-sm"
+              >
+                <span className="font-medium">{selected.length} selected</span>
+                <div className="flex gap-3">
                   <button
-                    onClick={bulkMarkRead}
-                    className="px-3 py-1 rounded-md border border-border text-sm hover:bg-muted"
-                    title="Mark selected as read"
+                    onClick={() =>
+                      setNotifications((prev) =>
+                        prev.map((n) =>
+                          selected.includes(n.id) ? { ...n, read: true } : n
+                        )
+                      )
+                    }
+                    className="px-5 py-2 bg-emerald-600 text-white rounded-lg text-sm"
                   >
-                    Mark
+                    Mark Read
                   </button>
-
                   <button
                     onClick={bulkDelete}
-                    className="px-3 py-1 rounded-md border border-border text-sm text-red-600 hover:bg-red-50"
-                    title="Delete selected"
+                    className="px-5 py-2 bg-rose-600 text-white rounded-lg text-sm"
                   >
                     Delete
                   </button>
                 </div>
-              </div>
-            </div>
-
-            {/* List */}
-            <div className="space-y-3">
-              {page.length === 0 ? (
-                <div className="rounded-xl border border-border p-8 text-center bg-card">
-                  <p className="text-lg font-semibold text-muted-foreground">
-                    No notifications
-                  </p>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    Try removing filters or check a different tab.
-                  </p>
-                </div>
-              ) : (
-                page.map((notif, idx) => (
-                  <article
-                    key={notif.id}
-                    className={`group flex items-start gap-4 rounded-lg p-4 transition-shadow border ${
-                      notif.read
-                        ? "bg-card/50 border-border hover:shadow-sm"
-                        : "bg-card/50 border-primary/20 hover:bg-primary/10"
-                    }`}
-                    style={{ animationDelay: `${idx * 30}ms` }}
-                    aria-labelledby={`notif-${notif.id}`}
-                  >
-                    {/* checkbox + icon */}
-                    <div className="flex flex-col items-start gap-2 mt-1">
-                      <input
-                        checked={isSelected(notif.id)}
-                        onChange={() => toggleSelect(notif.id)}
-                        type="checkbox"
-                        className="w-4 h-4"
-                        aria-label={`Select notification ${notif.title}`}
-                      />
-                      <div className="mt-2">{getIcon(notif.type)}</div>
-                    </div>
-
-                    {/* main content */}
-                    <div className="flex-1 min-w-0">
-                      <h3
-                        id={`notif-${notif.id}`}
-                        className={`truncate font-medium ${
-                          notif.read
-                            ? "text-muted-foreground"
-                            : "text-foreground"
-                        }`}
-                      >
-                        {notif.title}
-                      </h3>
-                      <p className="mt-1 text-sm text-muted-foreground truncate">
-                        {notif.message}
-                      </p>
-
-                      <div className="mt-3 flex items-center gap-3 text-xs text-muted-foreground">
-                        <time>{notif.timestamp}</time>
-                        {!notif.read && (
-                          <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs">
-                            unread
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* actions (hidden until hover) */}
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity ml-2 flex flex-col items-end gap-2">
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => handleMarkRead(notif.id)}
-                          className="p-2 rounded-md hover:bg-muted"
-                          title="Mark as read"
-                        >
-                          <CheckCircle2 className="w-4 h-4 text-muted-foreground" />
-                        </button>
-                        <button
-                          onClick={() => handleArchive(notif.id)}
-                          className="p-2 rounded-md hover:bg-muted"
-                          title="Archive"
-                        >
-                          <Archive className="w-4 h-4 text-muted-foreground" />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(notif.id)}
-                          className="p-2 rounded-md hover:bg-red-50"
-                          title="Delete"
-                        >
-                          <Trash2 className="w-4 h-4 text-muted-foreground hover:text-red-500" />
-                        </button>
-                      </div>
-
-                      <button
-                        className="text-xs text-muted-foreground"
-                        title="More"
-                      >
-                        <MoreVertical className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </article>
-                ))
-              )}
-            </div>
-
-            {/* Load more */}
-            {filtered.length > page.length && (
-              <div className="mt-6 flex justify-center">
-                <button
-                  onClick={loadMore}
-                  className="px-4 py-2 rounded-md border border-border hover:bg-muted"
-                >
-                  Load more
-                </button>
-              </div>
+              </motion.div>
             )}
 
-            {/* Undo toast */}
-            {undoStack && (
-              <div className="fixed bottom-6 right-6 bg-card border border-border rounded-lg p-3 flex items-center gap-4 shadow-lg">
-                <div>
-                  <p className="text-sm font-medium">Action performed</p>
-                  <p className="text-xs text-muted-foreground">
-                    You can undo this action for a few seconds.
-                  </p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={handleUndo}
-                    className="px-3 py-1 bg-primary text-white rounded-md text-sm"
+            {/* Notifications List */}
+            <div className="space-y-5">
+              <AnimatePresence>
+                {visibleNotifications.length === 0 ? (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="text-center py-20 bg-card border-2 border-dashed border-border rounded-2xl"
                   >
-                    Undo
-                  </button>
-                  <button
-                    onClick={() => {
-                      if (undoTimerRef.current) {
-                        clearTimeout(undoTimerRef.current);
-                        undoTimerRef.current = null;
-                      }
-                      setUndoStack(null);
-                    }}
-                    className="p-2 rounded-md hover:bg-muted"
-                    title="Dismiss"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
+                    <Inbox className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+                    <p className="text-xl font-medium text-muted-foreground">
+                      No notifications
+                    </p>
+                    <p className="text-muted-foreground mt-2">
+                      You're all caught up!
+                    </p>
+                  </motion.div>
+                ) : (
+                  visibleNotifications.map((notif, i) => (
+                    <motion.article
+                      key={notif.id}
+                      layout
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, x: -100 }}
+                      transition={{ delay: i * 0.05 }}
+                      className={`group relative bg-card border rounded-2xl p-6 hover:shadow-xl transition-all ${
+                        !notif.read ? "ring-2 ring-[#206380]/20" : ""
+                      }`}
+                    >
+                      <div className="flex gap-5">
+                        {/* Checkbox + Icon */}
+                        <div className="flex flex-col items-center gap-4">
+                          <input
+                            type="checkbox"
+                            checked={selected.includes(notif.id)}
+                            onChange={() => toggleSelect(notif.id)}
+                            className="w-5 h-5 rounded border-2 accent-[#206380]"
+                          />
+                          <div
+                            className={`p-3 rounded-xl bg-gradient-to-br ${getColor(
+                              notif.type
+                            )} text-white shadow-lg`}
+                          >
+                            {getIcon(notif.type)}
+                          </div>
+                        </div>
+
+                        {/* Content */}
+                        <div className="flex-1">
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <h3
+                                className={`font-bold text-lg ${
+                                  !notif.read
+                                    ? "text-foreground"
+                                    : "text-muted-foreground"
+                                }`}
+                              >
+                                {notif.title}
+                                {!notif.read && (
+                                  <span className="ml-3 inline-block w-2 h-2 bg-[#206380] rounded-full"></span>
+                                )}
+                              </h3>
+                              <p className="text-muted-foreground mt-2 leading-relaxed">
+                                {notif.message}
+                              </p>
+                              <p className="text-sm text-muted-foreground/70 mt-3 flex items-center gap-2">
+                                <Clock className="w-4 h-4" />
+                                {notif.time}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Actions */}
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
+                          {!notif.read && (
+                            <button
+                              onClick={() => markAsRead(notif.id)}
+                              className="p-3 hover:bg-muted rounded-xl"
+                            >
+                              <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                            </button>
+                          )}
+                          <button
+                            onClick={() => deleteNotification(notif.id)}
+                            className="p-3 hover:bg-rose-100 rounded-xl"
+                          >
+                            <Trash2 className="w-5 h-5 text-rose-600" />
+                          </button>
+                        </div>
+                      </div>
+                    </motion.article>
+                  ))
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Load More */}
+            {visibleCount < filtered.length && (
+              <div className="text-center mt-10">
+                <button
+                  onClick={() =>
+                    setVisibleCount((prev) =>
+                      Math.min(prev + 6, filtered.length)
+                    )
+                  }
+                  className="px-8 py-4 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-xl font-medium hover:shadow-lg transition"
+                >
+                  Load More Notifications
+                </button>
               </div>
             )}
           </div>
 
-          {/* ========== RIGHT (Sidebar) - sticky and compact ========== */}
-          <aside className="hidden lg:block">
-            <div className="sticky top-20 space-y-4">
-              {/* Filters card */}
-              <div className="bg-card border border-border rounded-lg p-4">
-                <h4 className="text-sm font-medium mb-3">Filters</h4>
-
-                <div className="flex flex-col gap-2">
-                  <label className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <input
-                      type="checkbox"
-                      checked={tab === "unread"}
-                      onChange={() => {
-                        setTab(tab === "unread" ? "all" : "unread");
-                        setSelected([]);
-                      }}
-                      className="w-4 h-4"
-                    />
-                    Unread only
-                  </label>
-
-                  <select
-                    value={"" /* wire to state if needed */}
-                    onChange={() => {}}
-                    className="text-sm rounded-md border border-border py-1 px-2 bg-transparent"
-                  >
-                    <option value="">All types</option>
-                    <option value="system">System</option>
-                    <option value="course">Course</option>
-                    <option value="payment">Payment</option>
-                  </select>
-
-                  <input
-                    type="date"
-                    onChange={() => {}}
-                    className="text-sm rounded-md border border-border py-1 px-2 bg-transparent"
-                  />
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Stats */}
+            <div className="bg-gradient-to-br from-[#206380] to-[#1b5666] rounded-2xl p-8 text-white shadow-xl">
+              <h3 className="text-2xl font-bold mb-6">Notification Summary</h3>
+              <div className="space-y-5">
+                <div className="flex justify-between text-lg">
+                  <span>Total</span>
+                  <span className="font-bold text-3xl">
+                    {notifications.length}
+                  </span>
                 </div>
-              </div>
-
-              {/* Summary */}
-              <div className="bg-card border border-border rounded-lg p-4">
-                <h4 className="text-sm font-medium mb-3">Summary</h4>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="text-center p-3 bg-white/5 rounded-md">
-                    <div className="text-xs text-muted-foreground">On page</div>
-                    <div className="text-lg font-semibold">{page.length}</div>
-                  </div>
-                  <div className="text-center p-3 bg-white/5 rounded-md">
-                    <div className="text-xs text-muted-foreground">Unread</div>
-                    <div className="text-lg font-semibold">{unreadCount}</div>
-                  </div>
+                <div className="flex justify-between">
+                  <span>Unread</span>
+                  <span className="font-bold text-3xl">{unreadCount}</span>
                 </div>
-                <div className="mt-3 text-xs text-muted-foreground">
-                  Updated: Just now
+                <div className="pt-5 border-t border-white/20">
+                  <p className="text-sm opacity-90">Last activity: Just now</p>
                 </div>
-              </div>
-
-              {/* Quick actions */}
-              <div className="bg-card border border-border rounded-lg p-4">
-                <h4 className="text-sm font-medium mb-3">Quick actions</h4>
-                <div className="flex flex-col gap-2">
-                  <button
-                    onClick={() => setSelected(page.map((p) => p.id))}
-                    className="w-full px-3 py-2 rounded-md border border-border text-sm hover:bg-muted"
-                  >
-                    Select page
-                  </button>
-                  <button
-                    onClick={markAllRead}
-                    className="w-full px-3 py-2 rounded-md bg-primary text-white text-sm"
-                  >
-                    Mark all read
-                  </button>
-                  <button
-                    onClick={() => {}}
-                    className="w-full px-3 py-2 rounded-md border border-border text-sm hover:bg-muted"
-                  >
-                    Settings
-                  </button>
-                </div>
-              </div>
-
-              {/* Recent activity */}
-              <div className="bg-card border border-border rounded-lg p-4">
-                <h4 className="text-sm font-medium mb-3">Recent</h4>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="flex items-start gap-3">
-                    <span className="w-2 h-2 rounded-full bg-primary mt-1" />
-                    New course published — 2h
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-2 h-2 rounded-full bg-amber-400 mt-1" />
-                    Payout processed — 1d
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 mt-1" />
-                    14 students enrolled — 3d
-                  </li>
-                </ul>
               </div>
             </div>
-          </aside>
+
+            {/* Quick Actions */}
+            <div className="bg-card border rounded-2xl p-6 shadow-lg">
+              <h3 className="font-bold text-lg mb-5">Quick Actions</h3>
+              <div className="space-y-3">
+                <button
+                  onClick={markAllRead}
+                  className="w-full py-4 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-xl font-medium"
+                >
+                  Mark All as Read
+                </button>
+                <button className="w-full py-4 border border-border rounded-xl hover:bg-muted transition">
+                  Notification Settings
+                </button>
+              </div>
+            </div>
+
+            {/* Filter by Type */}
+            <div className="bg-card border rounded-2xl p-6 shadow-lg">
+              <h3 className="font-bold text-lg mb-5">Filter by Type</h3>
+              <div className="space-y-3">
+                {[
+                  "all",
+                  "unread",
+                  "system",
+                  "enrollment",
+                  "payment",
+                  "warning",
+                ].map((f) => (
+                  <button
+                    key={f}
+                    onClick={() => setFilter(f)}
+                    className={`w-full text-left px-5 py-3 rounded-xl transition ${
+                      filter === f
+                        ? "bg-[#206380]/10 border border-[#206380]"
+                        : "hover:bg-muted"
+                    }`}
+                  >
+                    <span className="capitalize">
+                      {f === "all"
+                        ? "All Notifications"
+                        : f === "unread"
+                        ? "Unread Only"
+                        : f}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </DashboardShell>

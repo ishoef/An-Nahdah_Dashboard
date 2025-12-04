@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState, useMemo } from "react";
 import DashboardShell from "@/components/layout/DashobardShell";
 import {
   BarChart3,
@@ -12,594 +12,638 @@ import {
   Eye,
   Settings,
   X,
+  FileText,
+  CreditCard,
+  Users,
+  Activity,
+  Mail,
+  Clock,
+  Plus,
+  Trash2,
+  Edit2,
+  Grid3X3,
+  List,
+  Sparkles,
+  User,
+  BookOpen,
+  DollarSign,
+  Star,
+  CheckCircle2,
 } from "lucide-react";
-
-/**
- * Modern ReportsPage (demo)
- * - Filter bar: date range, course, report scope
- * - Report cards with Generate / Preview / Download
- * - Report settings modal (build options)
- * - Preview modal with simple SVG chart placeholders
- *
- * Tailwind required. Demo-only client state.
- */
+import { motion, AnimatePresence } from "framer-motion";
+import { saveAs } from "file-saver"; // npm i file-saver
+import jsPDF from "jspdf"; // npm i jspdf
+import * as XLSX from "xlsx"; // npm i xlsx
+import Papa from "papaparse"; // npm i papaparse
+import toast, { Toaster } from "react-hot-toast"; // npm i react-hot-toast
 
 const PRIMARY = "#206380";
 
-/* demo courses for filter */
 const courses = [
   { id: "all", title: "All courses" },
   { id: 1, title: "Tajweed Fundamentals" },
   { id: 2, title: "Intro to Islamic Fiqh" },
   { id: 3, title: "Advanced Arabic Grammar" },
   { id: 4, title: "Quranic Arabic Intensive" },
+  { id: 5, title: "Islamic History Part 1" },
+  { id: 6, title: "Arabic Literature Basics" },
+];
+
+const instructors = [
+  { id: "all", name: "All instructors" },
+  { id: 1, name: "Dr. Hassan Ahmed" },
+  { id: 2, name: "Ms. Amina Khan" },
+  { id: 3, name: "Prof. Mohammed Ali" },
+  { id: 4, name: "Dr. Fatima Hassan" },
 ];
 
 const reportsMeta = [
   {
     id: "enrollment",
-    title: "Student Enrollment",
-    desc: "Monthly enrollments, growth and cohort overview",
-    icon: LineChart,
+    title: "Enrollment Analytics",
+    desc: "Track student sign-ups, growth trends, and retention rates",
+    icon: Users,
     color: "from-blue-500 to-cyan-500",
   },
   {
     id: "course_perf",
     title: "Course Performance",
-    desc: "Completion, engagement and ratings per course",
+    desc: "Completion rates, engagement metrics, and student feedback",
     icon: BarChart3,
     color: "from-emerald-500 to-teal-500",
   },
   {
     id: "instructor",
     title: "Instructor Insights",
-    desc: "Instructor ratings, activity and avg student success",
-    icon: PieChart,
+    desc: "Performance ratings, class sizes, and teaching efficiency",
+    icon: User,
     color: "from-violet-500 to-purple-500",
   },
   {
     id: "revenue",
-    title: "Revenue",
-    desc: "Earnings, refunds and course-level revenue breakdown",
-    icon: BarChart3,
+    title: "Revenue Reports",
+    desc: "Income breakdown, payments, and financial projections",
+    icon: CreditCard,
     color: "from-orange-500 to-red-500",
+  },
+  {
+    id: "student_perf",
+    title: "Student Performance",
+    desc: "Grades, progress tracking, and achievement analytics",
+    icon: Activity,
+    color: "from-pink-500 to-rose-500",
+  },
+  {
+    id: "engagement",
+    title: "User Engagement",
+    desc: "Login activity, session times, and platform usage patterns",
+    icon: Sparkles,
+    color: "from-indigo-500 to-blue-500",
+  },
+  {
+    id: "custom",
+    title: "Custom Report",
+    desc: "Build tailored reports with selected metrics and filters",
+    icon: Settings,
+    color: "from-gray-500 to-slate-500",
   },
 ];
 
-/* export CSV helper (lightweight) */
-function exportCSV(rows = [], filename = "report.csv") {
-  if (!rows || rows.length === 0) {
-    alert("No data to export (demo)");
-    return;
-  }
-  const keys = Object.keys(rows[0]);
-  const csv = [
-    keys.join(","),
-    ...rows.map((r) =>
-      keys.map((k) => `"${String(r[k] ?? "").replace(/"/g, '""')}"`).join(",")
-    ),
-  ].join("\n");
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
-/* simple demo data generation for preview/export */
-function demoReportRows(type, courseId, from, to) {
-  // return small array depending on type
-  const base = [
-    { period: "2025-01", value: Math.round(Math.random() * 200 + 50) },
-    { period: "2025-02", value: Math.round(Math.random() * 200 + 60) },
-    { period: "2025-03", value: Math.round(Math.random() * 200 + 80) },
-    { period: "2025-04", value: Math.round(Math.random() * 200 + 100) },
-  ];
-  return base.map((r, i) => ({
-    ...r,
-    metric: type,
-    course: courseId || "all",
-  }));
-}
-
-/* tiny svg chart placeholders */
-function LinePlaceholder({ className }) {
-  return (
-    <svg viewBox="0 0 220 80" className={className} aria-hidden>
-      <rect x="0" y="0" width="220" height="80" rx="8" fill="#f8fafc" />
-      <polyline
-        fill="none"
-        stroke={PRIMARY}
-        strokeWidth="3"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        points="8,64 42,42 78,52 118,30 158,40 198,20"
-      />
-      <circle cx="8" cy="64" r="3" fill={PRIMARY} />
-      <circle cx="42" cy="42" r="3" fill={PRIMARY} />
-      <circle cx="118" cy="30" r="3" fill={PRIMARY} />
-    </svg>
-  );
-}
-
-function BarPlaceholder({ className }) {
-  return (
-    <svg viewBox="0 0 220 80" className={className} aria-hidden>
-      <rect x="0" y="0" width="220" height="80" rx="8" fill="#f8fafc" />
-      <rect
-        x="20"
-        y="28"
-        width="24"
-        height="44"
-        rx="4"
-        fill={PRIMARY}
-        opacity="0.85"
-      />
-      <rect
-        x="60"
-        y="12"
-        width="24"
-        height="60"
-        rx="4"
-        fill={PRIMARY}
-        opacity="0.65"
-      />
-      <rect
-        x="100"
-        y="40"
-        width="24"
-        height="32"
-        rx="4"
-        fill={PRIMARY}
-        opacity="0.95"
-      />
-      <rect
-        x="140"
-        y="20"
-        width="24"
-        height="52"
-        rx="4"
-        fill={PRIMARY}
-        opacity="0.75"
-      />
-    </svg>
-  );
-}
-
-function PiePlaceholder({ className }) {
-  return (
-    <svg viewBox="0 0 220 80" className={className} aria-hidden>
-      <rect x="0" y="0" width="220" height="80" rx="8" fill="#f8fafc" />
-      <circle cx="110" cy="40" r="24" fill={PRIMARY} />
-      <path d="M110 40 L134 24 A24 24 0 0 1 142 54 Z" fill="#60a5fa" />
-      <path d="M110 40 L86 18 A24 24 0 0 1 86 62 Z" fill="#a78bfa" />
-    </svg>
-  );
-}
-
 export default function ReportsPage() {
-  // filter state
   const [courseFilter, setCourseFilter] = useState("all");
-  const [reportScope, setReportScope] = useState("overview"); // overview | per-course | per-batch
-  const [fromDate, setFromDate] = useState("2025-01-01");
-  const [toDate, setToDate] = useState("2025-04-30");
+  const [instructorFilter, setInstructorFilter] = useState("all");
+  const [fromDate, setFromDate] = useState(
+    new Date(new Date().setMonth(new Date().getMonth() - 3))
+      .toISOString()
+      .slice(0, 10)
+  );
+  const [toDate, setToDate] = useState(new Date().toISOString().slice(0, 10));
+  const [reportHistory, setReportHistory] = useState([]);
+  const [openSettings, setOpenSettings] = useState(null);
+  const [openPreview, setOpenPreview] = useState(null);
+  const [openCustomBuilder, setOpenCustomBuilder] = useState(false);
+  const [customMetrics, setCustomMetrics] = useState([]);
+  const [viewMode, setViewMode] = useState("grid");
+  const [selectedReports, setSelectedReports] = useState([]);
 
-  // modals
-  const [openSettingsFor, setOpenSettingsFor] = useState(null); // report id
-  const [openPreviewFor, setOpenPreviewFor] = useState(null); // report id
+  const customOptions = [
+    { id: "enrollment", label: "Enrollment Trends" },
+    { id: "completion", label: "Course Completion Rates" },
+    { id: "revenue", label: "Revenue Breakdown" },
+    { id: "ratings", label: "Feedback & Ratings" },
+    { id: "engagement", label: "User Engagement" },
+    { id: "demographics", label: "Student Demographics" },
+    { id: "performance", label: "Academic Performance" },
+  ];
 
-  // quick stats (demo numbers)
   const stats = useMemo(
     () => ({
       totalStudents: 1234,
       activeCourses: 24,
       totalRevenue: 45230,
       avgRating: 4.7,
+      completionRate: 82,
+      activeUsers: 890,
     }),
     []
   );
 
-  function handleGenerate(reportId) {
-    // demo: show settings modal
-    setOpenSettingsFor(reportId);
-  }
+  const handleGenerate = (reportId, options = {}) => {
+    const data = generateDemoData(reportId);
+    const newReport = {
+      id: Date.now(),
+      type: reportId,
+      generatedAt: new Date().toISOString(),
+      data,
+      options,
+    };
+    setReportHistory((prev) => [newReport, ...prev]);
+    toast.success("Report generated!");
+    setOpenSettings(null);
+  };
 
-  function handleDownload(reportId) {
-    const rows = demoReportRows(reportId, courseFilter, fromDate, toDate);
-    exportCSV(
-      rows,
-      `${reportId}-${courseFilter}-${new Date().toISOString().slice(0, 10)}.csv`
+  const handleDownload = (format, report) => {
+    const data = report.data;
+    if (format === "csv") {
+      const csv = Papa.unparse(data);
+      const blob = new Blob([csv], { type: "text/csv" });
+      saveAs(blob, `${report.type}-report.csv`);
+    } else if (format === "pdf") {
+      const doc = new jsPDF();
+      doc.text(report.type, 10, 10);
+      data.forEach((row, i) =>
+        doc.text(`${row.period}: ${row.value}`, 10, 20 + i * 10)
+      );
+      doc.save(`${report.type}-report.pdf`);
+    } else if (format === "excel") {
+      const ws = XLSX.utils.json_to_sheet(data);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, report.type);
+      XLSX.writeFile(wb, `${report.type}-report.xlsx`);
+    }
+    toast.success("Report downloaded");
+  };
+
+  const handleCustomGenerate = () => {
+    if (customMetrics.length === 0) {
+      toast.error("Select at least one metric");
+      return;
+    }
+    handleGenerate("custom", { metrics: customMetrics });
+    setOpenCustomBuilder(false);
+    setCustomMetrics([]);
+  };
+
+  const toggleSelectReport = (id) => {
+    setSelectedReports((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
-  }
+  };
+
+  const deleteReport = (id) => {
+    setReportHistory((prev) => prev.filter((r) => r.id !== id));
+    toast.success("Report deleted");
+  };
+
+  const bulkDeleteReports = () => {
+    setReportHistory((prev) =>
+      prev.filter((r) => !selectedReports.includes(r.id))
+    );
+    setSelectedReports([]);
+    toast.success("Selected reports deleted");
+  };
 
   return (
     <DashboardShell>
-      <div className="min-h-screen p-8 bg-linear-to-br from-background via-background to-background/80">
+      <Toaster position="bottom-right" />
+
+      <div className="min-h-screen p-6 md:p-10 bg-background">
         {/* Header */}
-        <div className="mb-6 mx-auto">
-          <div className="flex items-start justify-between gap-4">
+        <motion.div
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-10"
+        >
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
             <div>
-              <h1 className="text-3xl font-bold text-foreground flex items-center gap-3">
-                <BarChart3 className="w-6 h-6 text-[rgba(32,99,128,1)]" />{" "}
-                Reports
+              <h1 className="text-4xl font-bold text-foreground flex items-center gap-4">
+                <BarChart3 className="w-12 h-12 text-[#206380]" />
+                Reports & Analytics
               </h1>
-              <p className="text-sm text-muted-foreground mt-1">
-                Generate academy reports — enrollment, course performance,
-                revenue, and instructor insights.
+              <p className="text-lg text-muted-foreground mt-3">
+                Generate insights, track performance, and make data-driven
+                decisions
               </p>
             </div>
+            <button
+              onClick={() => setOpenCustomBuilder(true)}
+              className="px-7 py-4 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-xl font-bold text-lg flex items-center gap-3 hover:shadow-2xl transition-all hover:scale-105"
+            >
+              <Plus className="w-6 h-6" />
+              Custom Report
+            </button>
+          </div>
+        </motion.div>
 
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => {
-                  // export summary (demo)
-                  exportCSV(
-                    [{ stat: "totalStudents", value: stats.totalStudents }],
-                    `academy-summary-${new Date()
-                      .toISOString()
-                      .slice(0, 10)}.csv`
-                  );
-                }}
-                className="px-4 py-2 rounded-lg border border-border bg-white flex items-center gap-2"
+        {/* Key Stats */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mb-10">
+          {[
+            {
+              label: "Total Students",
+              value: stats.totalStudents,
+              icon: Users,
+              color: "from-blue-500 to-cyan-500",
+            },
+            {
+              label: "Active Courses",
+              value: stats.activeCourses,
+              icon: BookOpen,
+              color: "from-emerald-500 to-teal-500",
+            },
+            {
+              label: "Revenue",
+              value: `$${stats.totalRevenue.toLocaleString()}`,
+              icon: DollarSign,
+              color: "from-green-500 to-emerald-500",
+            },
+            {
+              label: "Avg Rating",
+              value: stats.avgRating,
+              icon: Star,
+              color: "from-yellow-500 to-amber-500",
+            },
+            {
+              label: "Completion Rate",
+              value: `${stats.completionRate}%`,
+              icon: CheckCircle2,
+              color: "from-purple-500 to-indigo-500",
+            },
+            {
+              label: "Active Users",
+              value: stats.activeUsers,
+              icon: Activity,
+              color: "from-pink-500 to-rose-500",
+            },
+          ].map((stat, i) => {
+            const Icon = stat.icon;
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.05 }}
+                className="bg-card border rounded-2xl p-5 shadow-lg"
               >
-                <Download className="w-4 h-4" /> Export Summary
-              </button>
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-sm text-muted-foreground">{stat.label}</p>
+                  <Icon className="w-5 h-5 text-muted-foreground" />
+                </div>
+                <p className="text-3xl font-bold">{stat.value}</p>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* Filters */}
+        <div className="bg-card border rounded-2xl p-6 mb-10 shadow-lg">
+          <h3 className="text-xl font-bold mb-6 flex items-center gap-3">
+            <Filter className="w-6 h-6 text-[#206380]" />
+            Report Filters
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                From Date
+              </label>
+              <input
+                type="date"
+                value={fromDate}
+                onChange={(e) => setFromDate(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border bg-background"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">To Date</label>
+              <input
+                type="date"
+                value={toDate}
+                onChange={(e) => setToDate(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border bg-background"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Course</label>
+              <select
+                value={courseFilter}
+                onChange={(e) => setCourseFilter(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border bg-background"
+              >
+                {courses.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.title}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Instructor
+              </label>
+              <select
+                value={instructorFilter}
+                onChange={(e) => setInstructorFilter(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border bg-background"
+              >
+                {instructors.map((i) => (
+                  <option key={i.id} value={i.id}>
+                    {i.name}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </div>
 
-        <div className="mx-auto space-y-6">
-          {/* Filter bar */}
-          <div className="bg-white/50 backdrop-blur rounded-2xl p-4 border border-border flex flex-col lg:flex-row gap-3 items-start lg:items-center justify-between">
-            <div className="flex items-center gap-3 w-full lg:w-auto flex-1">
-              <div className="inline-flex items-center gap-2 bg-card border border-border rounded-lg px-3 py-2">
-                <Calendar className="w-5 h-5 text-muted-foreground" />
-                <input
-                  className="bg-transparent outline-none text-sm w-36"
-                  type="date"
-                  value={fromDate}
-                  onChange={(e) => setFromDate(e.target.value)}
-                />
-                <span className="text-muted-foreground mx-1">—</span>
-                <input
-                  className="bg-transparent outline-none text-sm w-36"
-                  type="date"
-                  value={toDate}
-                  onChange={(e) => setToDate(e.target.value)}
-                />
-              </div>
-
-              <div className="inline-flex items-center border border-border rounded-lg bg-card p-1">
-                <Filter className="w-4 h-4 text-muted-foreground ml-1" />
-                <select
-                  className="bg-transparent px-2 text-sm outline-none"
-                  value={courseFilter}
-                  onChange={(e) => setCourseFilter(e.target.value)}
-                >
-                  {courses.map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.title}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="inline-flex items-center border border-border rounded-lg bg-card p-1">
-                <select
-                  className="bg-transparent px-2 text-sm outline-none"
-                  value={reportScope}
-                  onChange={(e) => setReportScope(e.target.value)}
-                >
-                  <option value="overview">Overview</option>
-                  <option value="per-course">Per course</option>
-                  <option value="per-batch">Per batch</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2 w-full lg:w-auto">
-              <button
-                onClick={() => {
-                  /* demo: open a create report panel */ alert(
-                    "Use Generate on a report card to build a report"
-                  );
-                }}
-                className="px-3 py-2 rounded-md bg-[rgba(32,99,128,1)] text-white flex items-center gap-2"
+        {/* Reports Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+          {reportsMeta.map((report, i) => {
+            const Icon = report.icon;
+            return (
+              <motion.div
+                key={report.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.05 }}
+                className="bg-card border rounded-2xl p-6 shadow-lg hover:shadow-xl transition"
               >
-                <Settings className="w-4 h-4" /> Build Report
-              </button>
-
-              <button
-                onClick={() =>
-                  exportCSV(
-                    [{ from: fromDate, to: toDate, scope: reportScope }],
-                    `reports-filter-${new Date()
-                      .toISOString()
-                      .slice(0, 10)}.csv`
-                  )
-                }
-                className=" flex items-center gap-2 px-3 py-2 rounded-md border border-border bg-white"
-              >
-                <Download className="w-4 h-4" /> Export Filters
-              </button>
-            </div>
-          </div>
-
-          {/* Reports grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {reportsMeta.map((r, idx) => {
-              const Icon = r.icon;
-              return (
-                <div
-                  key={r.id}
-                  className="group/report rounded-2xl border border-border bg-card/50 backdrop-blur-sm p-5 hover:shadow-lg transition-all duration-200"
-                >
-                  <div className="flex gap-4">
-                    <div
-                      className={`w-14 h-14 rounded-lg bg-linear-to-br ${r.color} flex items-center justify-center text-white shadow-md flex-shrink-0`}
-                    >
-                      <Icon className="w-7 h-7" />
-                    </div>
-
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-2">
-                        <div>
-                          <h3 className="text-lg font-semibold text-foreground">
-                            {r.title}
-                          </h3>
-                          <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
-                            {r.desc}
-                          </p>
-                        </div>
-
-                        <div className="flex flex-col items-end gap-2">
-                          <button
-                            onClick={() => handleDownload(r.id)}
-                            title="Download CSV"
-                            className="px-2 py-1 rounded-md border border-border bg-white text-sm"
-                          >
-                            <Download className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </div>
-
-                      <div className="mt-4 border-t pt-5 flex items-center gap-2">
-                        <button
-                          onClick={() => handleGenerate(r.id)}
-                          className="px-3 py-2 rounded-md bg-[rgba(32,99,128,1)] text-white text-sm flex items-center gap-2"
-                        >
-                          Generate
-                        </button>
-                        <button
-                          onClick={() => setOpenPreviewFor(r.id)}
-                          className="px-3 py-2 rounded-md border border-border bg-white text-sm flex items-center gap-2"
-                        >
-                          <Eye className="w-4 h-4" /> Preview
-                        </button>
-                        <button
-                          onClick={() => setOpenSettingsFor(r.id)}
-                          className="px-3 py-2 rounded-md border border-border bg-white text-sm flex items-center gap-2"
-                        >
-                          <Settings className="w-4 h-4" /> Settings
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-xl font-bold">{report.title}</h3>
+                  <Icon className="w-8 h-8 text-[#206380]" />
                 </div>
-              );
-            })}
-          </div>
-
-          {/* Quick stats */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="rounded-xl border border-border bg-card/50 backdrop-blur-sm p-4">
-              <p className="text-xs text-muted-foreground mb-2">
-                Total Students
-              </p>
-              <p className="text-2xl font-bold text-foreground">1,234</p>
-              <p className="text-xs text-emerald-600 mt-2">
-                ↑ 12% from last month
-              </p>
-            </div>
-            <div className="rounded-xl border border-border bg-card/50 backdrop-blur-sm p-4">
-              <p className="text-xs text-muted-foreground mb-2">
-                Active Courses
-              </p>
-              <p className="text-2xl font-bold text-foreground">24</p>
-              <p className="text-xs text-primary mt-2">6 new this month</p>
-            </div>
-            <div className="rounded-xl border border-border bg-card/50 backdrop-blur-sm p-4">
-              <p className="text-xs text-muted-foreground mb-2">
-                Total Revenue
-              </p>
-              <p className="text-2xl font-bold text-foreground">$45,230</p>
-              <p className="text-xs text-emerald-600 mt-2">
-                ↑ 8% from last month
-              </p>
-            </div>
-            <div className="rounded-xl border border-border bg-card/50 backdrop-blur-sm p-4">
-              <p className="text-xs text-muted-foreground mb-2">Avg Rating</p>
-              <p className="text-2xl font-bold text-foreground">4.7</p>
-              <p className="text-xs text-yellow-500 mt-2">Based on reviews</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Settings modal */}
-        {openSettingsFor && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div
-              className="absolute inset-0 bg-black/40"
-              onClick={() => setOpenSettingsFor(null)}
-            />
-            <div className="relative bg-white rounded-2xl w-full max-w-2xl p-6 z-10 shadow-xl">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h3 className="text-lg font-semibold">
-                    Report settings —{" "}
-                    {reportsMeta.find((r) => r.id === openSettingsFor)?.title}
-                  </h3>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Configure filters, grouping and export options for this
-                    report.
-                  </p>
-                </div>
-                <button
-                  onClick={() => setOpenSettingsFor(null)}
-                  className="p-2 rounded-md"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  alert("Report generated (demo)");
-                  setOpenSettingsFor(null);
-                }}
-              >
-                <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <div>
-                    <label className="text-xs text-muted-foreground">
-                      Group by
-                    </label>
-                    <select className="w-full mt-1 px-3 py-2 border border-border rounded-md">
-                      <option value="month">Month</option>
-                      <option value="course">Course</option>
-                      <option value="instructor">Instructor</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="text-xs text-muted-foreground">
-                      Include
-                    </label>
-                    <select className="w-full mt-1 px-3 py-2 border border-border rounded-md">
-                      <option>All</option>
-                      <option>Paid only</option>
-                      <option>Free only</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="text-xs text-muted-foreground">
-                      Export format
-                    </label>
-                    <select className="w-full mt-1 px-3 py-2 border border-border rounded-md">
-                      <option>CSV</option>
-                      <option>Excel</option>
-                      <option>PDF</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="text-xs text-muted-foreground">
-                      Schedule
-                    </label>
-                    <input
-                      type="datetime-local"
-                      className="w-full mt-1 px-3 py-2 border border-border rounded-md"
-                    />
-                  </div>
-                </div>
-
-                <div className="mt-4 flex items-center justify-end gap-3">
+                <p className="text-muted-foreground mb-6">{report.desc}</p>
+                <div className="flex gap-3">
                   <button
-                    type="button"
-                    onClick={() => setOpenSettingsFor(null)}
-                    className="px-4 py-2 rounded-md border border-border"
+                    onClick={() => setOpenSettings(report.id)}
+                    className="flex-1 py-3 bg-[#206380] text-white rounded-xl font-medium"
+                  >
+                    Generate
+                  </button>
+                  <button
+                    onClick={() => setOpenPreview(report.id)}
+                    className="px-4 py-3 border rounded-xl"
+                  >
+                    <Eye className="w-5 h-5" />
+                  </button>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* Report History */}
+        {reportHistory.length > 0 && (
+          <div className="mt-12">
+            <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
+              <FileText className="w-7 h-7 text-[#206380]" />
+              Report History
+            </h3>
+            <div className="space-y-4">
+              {reportHistory.map((report) => (
+                <div
+                  key={report.id}
+                  className="bg-card border rounded-2xl p-6 flex justify-between items-center"
+                >
+                  <div>
+                    <h4 className="font-bold text-lg">
+                      {reportsMeta.find((r) => r.id === report.type)?.title ||
+                        report.type}
+                    </h4>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Generated on{" "}
+                      {new Date(report.generatedAt).toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => handleDownload("csv", report)}
+                      className="px-4 py-2 border rounded-xl"
+                    >
+                      CSV
+                    </button>
+                    <button
+                      onClick={() => handleDownload("pdf", report)}
+                      className="px-4 py-2 border rounded-xl"
+                    >
+                      PDF
+                    </button>
+                    <button
+                      onClick={() => handleDownload("excel", report)}
+                      className="px-4 py-2 border rounded-xl"
+                    >
+                      Excel
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Settings Modal */}
+        <AnimatePresence>
+          {openSettings && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+              onClick={() => setOpenSettings(null)}
+            >
+              <motion.div
+                initial={{ scale: 0.95 }}
+                animate={{ scale: 1 }}
+                onClick={(e) => e.stopPropagation()}
+                className="bg-card rounded-3xl shadow-2xl max-w-lg w-full p-10 border"
+              >
+                <h2 className="text-2xl font-bold mb-6">
+                  Generate{" "}
+                  {reportsMeta.find((r) => r.id === openSettings)?.title}
+                </h2>
+                <div className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">
+                      Build Options
+                    </label>
+                    <select className="w-full px-4 py-3 rounded-xl border bg-background">
+                      <option>Standard</option>
+                      <option>Detailed</option>
+                      <option>Summary</option>
+                    </select>
+                  </div>
+                  <div className="flex justify-end gap-4">
+                    <button
+                      onClick={() => setOpenSettings(null)}
+                      className="px-6 py-3 border rounded-xl"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={() => handleGenerate(openSettings)}
+                      className="px-6 py-3 bg-[#206380] text-white rounded-xl"
+                    >
+                      Generate
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Preview Modal */}
+        <AnimatePresence>
+          {openPreview && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+              onClick={() => setOpenPreview(null)}
+            >
+              <motion.div
+                initial={{ scale: 0.95 }}
+                animate={{ scale: 1 }}
+                onClick={(e) => e.stopPropagation()}
+                className="bg-card rounded-3xl shadow-2xl max-w-4xl w-full p-10 border"
+              >
+                <h2 className="text-2xl font-bold mb-6">
+                  Preview -{" "}
+                  {reportsMeta.find((r) => r.id === openPreview)?.title}
+                </h2>
+                <div className="h-64 flex items-center justify-center border-2 border-dashed rounded-2xl text-muted-foreground">
+                  <BarChart3 className="w-16 h-16" />
+                  <p className="ml-4 text-lg">Chart Preview (Demo)</p>
+                </div>
+                <div className="flex justify-end gap-4 mt-6">
+                  <button
+                    onClick={() => setOpenPreview(null)}
+                    className="px-6 py-3 border rounded-xl"
+                  >
+                    Close
+                  </button>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Custom Builder Modal */}
+        <AnimatePresence>
+          {openCustomBuilder && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+              onClick={() => setOpenCustomBuilder(false)}
+            >
+              <motion.div
+                initial={{ scale: 0.95 }}
+                animate={{ scale: 1 }}
+                onClick={(e) => e.stopPropagation()}
+                className="bg-card rounded-3xl shadow-2xl max-w-xl w-full p-10 border"
+              >
+                <h2 className="text-2xl font-bold mb-6">
+                  Custom Report Builder
+                </h2>
+                <div className="space-y-4">
+                  {customOptions.map((option) => (
+                    <label
+                      key={option.id}
+                      className="flex items-center gap-3 p-4 border rounded-xl hover:bg-muted transition cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={customMetrics.includes(option.id)}
+                        onChange={() =>
+                          setCustomMetrics((prev) =>
+                            prev.includes(option.id)
+                              ? prev.filter((x) => x !== option.id)
+                              : [...prev, option.id]
+                          )
+                        }
+                        className="w-5 h-5 rounded accent-[#206380]"
+                      />
+                      <span className="font-medium">{option.label}</span>
+                    </label>
+                  ))}
+                </div>
+                <div className="flex justify-end gap-4 mt-8">
+                  <button
+                    onClick={() => setOpenCustomBuilder(false)}
+                    className="px-6 py-3 border rounded-xl"
                   >
                     Cancel
                   </button>
                   <button
-                    type="submit"
-                    className="px-4 py-2 rounded-md bg-[rgba(32,99,128,1)] text-white"
+                    onClick={handleCustomGenerate}
+                    className="px-6 py-3 bg-[#206380] text-white rounded-xl"
                   >
-                    Save & Generate
+                    Generate Custom Report
                   </button>
                 </div>
-              </form>
-            </div>
-          </div>
-        )}
-
-        {/* Preview modal */}
-        {openPreviewFor && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div
-              className="absolute inset-0 bg-black/40"
-              onClick={() => setOpenPreviewFor(null)}
-            />
-            <div className="relative bg-white rounded-2xl w-full max-w-3xl p-6 z-10 shadow-xl">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h3 className="text-lg font-semibold">
-                    Preview —{" "}
-                    {reportsMeta.find((r) => r.id === openPreviewFor)?.title}
-                  </h3>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Demo preview — charts are placeholders.
-                  </p>
-                </div>
-                <button
-                  onClick={() => setOpenPreviewFor(null)}
-                  className="p-2 rounded-md"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-
-              <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="rounded-lg border border-border p-4">
-                  <div className="text-xs text-muted-foreground">Trend</div>
-                  <div className="mt-3">
-                    {/* placeholder depending on type */}
-                    {openPreviewFor === "enrollment" ? (
-                      <LinePlaceholder className="w-full" />
-                    ) : openPreviewFor === "course_perf" ? (
-                      <BarPlaceholder className="w-full" />
-                    ) : (
-                      <PiePlaceholder className="w-full" />
-                    )}
-                  </div>
-                </div>
-
-                <div className="rounded-lg border border-border p-4">
-                  <div className="text-xs text-muted-foreground">Summary</div>
-                  <div className="mt-3 space-y-2 text-sm">
-                    <div className="flex items-center justify-between">
-                      <div>Total</div>
-                      <div className="font-semibold">234</div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>Active</div>
-                      <div className="font-semibold">198</div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>New (period)</div>
-                      <div className="font-semibold">42</div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>Export</div>
-                      <button
-                        onClick={() => handleDownload(openPreviewFor)}
-                        className="px-2 py-1 rounded-md border border-border bg-white text-sm inline-flex items-center gap-2"
-                      >
-                        <Download className="w-4 h-4" /> CSV
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-4 text-sm text-muted-foreground">
-                Note: charts here are illustrative. Connect to your analytics
-                backend for real data and time-series.
-              </div>
-            </div>
-          </div>
-        )}
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </DashboardShell>
+  );
+}
+
+// Helper Functions
+function generateDemoData(type) {
+  return Array.from({ length: 6 }, (_, i) => ({
+    period: `Month ${i + 1}`,
+    value: Math.round(Math.random() * 1000 + 200),
+  }));
+}
+
+function LineChartSVG() {
+  return (
+    <svg viewBox="0 0 300 150" className="w-full h-32">
+      <path
+        d="M0 140 L50 100 L100 120 L150 80 L200 110 L250 70 L300 90"
+        fill="none"
+        stroke={PRIMARY}
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function BarChartSVG() {
+  return (
+    <svg viewBox="0 0 300 150" className="w-full h-32">
+      {[40, 80, 60, 100, 70, 90].map((h, i) => (
+        <rect
+          key={i}
+          x={i * 50 + 10}
+          y={150 - h}
+          width="30"
+          height={h}
+          fill={PRIMARY}
+          rx="4"
+        />
+      ))}
+    </svg>
+  );
+}
+
+function PieChartSVG() {
+  return (
+    <svg viewBox="0 0 150 150" className="w-32 h-32 mx-auto">
+      <circle cx="75" cy="75" r="60" fill={PRIMARY} />
+      <path d="M75 75 L135 75 A60 60 0 0 1 75 135 Z" fill="#60a5fa" />
+      <path d="M75 75 L75 15 A60 60 0 0 1 135 75 Z" fill="#a78bfa" />
+    </svg>
   );
 }
