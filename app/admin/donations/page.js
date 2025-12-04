@@ -391,7 +391,7 @@ export default function DonationMaintainPage() {
 
   return (
     <DashboardShell>
-      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/40 p-4">
+      <div className="min-h-screen bg-linear-to-b from-background via-background to-muted/40 p-4">
         <div className="mx-auto space-y-8">
           {/* Header */}
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
@@ -432,7 +432,7 @@ export default function DonationMaintainPage() {
               </div>
               <button
                 onClick={() => setShowDonationModal(true)}
-                className="px-4 py-2.5 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-md font-medium shadow-md hover:shadow-lg transition-all flex items-center gap-2"
+                className="px-4 py-2.5 bg-linear-to-r from-nhd-700 to-[#1b5666] text-white rounded-md font-medium shadow-md hover:shadow-lg transition-all flex items-center gap-2"
               >
                 <Plus className="w-4 h-4" /> New Donation
               </button>
@@ -497,14 +497,14 @@ export default function DonationMaintainPage() {
                 preserveAspectRatio="none"
               >
                 <defs>
-                  <linearGradient id="donLineG" x1="0" x2="0" y1="0" y2="1">
+                  <linearlinear id="donLineG" x1="0" x2="0" y1="0" y2="1">
                     <stop offset="0%" stopColor={PRIMARY} stopOpacity="0.18" />
                     <stop
                       offset="100%"
                       stopColor={PRIMARY}
                       stopOpacity="0.04"
                     />
-                  </linearGradient>
+                  </linearlinear>
                 </defs>
                 <path d={lineChart.area} fill="url(#donLineG)" stroke="none" />
                 <path
@@ -626,7 +626,7 @@ export default function DonationMaintainPage() {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="Search by ID, donor, campaign..."
-                    className="pl-10 pr-4 py-2.5 rounded-md border border-border bg-background text-sm w-72 focus:outline-none focus:ring-2 focus:ring-[#206380]/50 transition"
+                    className="pl-10 pr-4 py-2.5 rounded-md border border-border bg-background text-sm w-72 focus:outline-none focus:ring-2 focus:ring-nhd-700/50 transition"
                   />
                 </div>
                 <div className="flex rounded-md border border-border bg-background p-1">
@@ -634,7 +634,7 @@ export default function DonationMaintainPage() {
                     onClick={() => setViewMode("table")}
                     className={`p-2 rounded-sm transition ${
                       viewMode === "table"
-                        ? "bg-[#206380] text-white"
+                        ? "bg-nhd-700 text-white"
                         : "hover:bg-muted"
                     }`}
                   >
@@ -644,7 +644,7 @@ export default function DonationMaintainPage() {
                     onClick={() => setViewMode("grid")}
                     className={`p-2 rounded-sm transition ${
                       viewMode === "grid"
-                        ? "bg-[#206380] text-white"
+                        ? "bg-nhd-700 text-white"
                         : "hover:bg-muted"
                     }`}
                   >
@@ -824,7 +824,7 @@ function DonationTable({
                   donations.length > 0
                 }
                 onChange={onToggleSelectAll}
-                className="rounded border-border accent-[#206380]"
+                className="rounded border-border accent-nhd-700"
               />
             </th>
             <th className="px-6 py-4">ID</th>
@@ -868,7 +868,7 @@ function DonationTable({
                   type="checkbox"
                   checked={selectedIds.includes(d.id)}
                   onChange={() => onToggleSelect(d.id)}
-                  className="rounded border-border accent-[#206380]"
+                  className="rounded border-border accent-nhd-700"
                 />
               </td>
               <td className="px-6 py-4 font-medium">{d.id}</td>
@@ -904,7 +904,7 @@ function DonationTable({
         <div className="p-4 border-t border-border flex justify-end">
           <button
             onClick={onBulkProcess}
-            className="px-6 py-2.5 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-md font-medium shadow-md hover:shadow-lg transition-all flex items-center gap-2"
+            className="px-6 py-2.5 bg-linear-to-r from-nhd-700 to-[#1b5666] text-white rounded-md font-medium shadow-md hover:shadow-lg transition-all flex items-center gap-2"
           >
             <Gift className="w-4 h-4" /> Process Selected ({selectedIds.length})
           </button>
@@ -925,7 +925,7 @@ function DonationGrid({ donations, onViewDetails, onEdit }) {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="rounded-2xl border border-border bg-card/50 backdrop-blur-sm p-6 hover:border-[#206380]/50 hover:shadow-lg transition-all"
+            className="rounded-2xl border border-border bg-card/50 backdrop-blur-sm p-6 hover:border-nhd-700/50 hover:shadow-lg transition-all"
           >
             <div className="flex items-start justify-between mb-4">
               <h3 className="text-lg font-semibold text-foreground">
@@ -959,7 +959,7 @@ function DonationGrid({ donations, onViewDetails, onEdit }) {
               </button>
               <button
                 onClick={() => onEdit(d)}
-                className="flex-1 px-4 py-2 text-sm font-medium bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-md hover:shadow-md transition flex items-center gap-2 justify-center"
+                className="flex-1 px-4 py-2 text-sm font-medium bg-linear-to-r from-nhd-700 to-[#1b5666] text-white rounded-md hover:shadow-md transition flex items-center gap-2 justify-center"
               >
                 <Edit2 className="w-4 h-4" /> Edit
               </button>
@@ -1015,7 +1015,7 @@ function DonationModal({ open, onClose, onSubmit }) {
         >
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold flex items-center gap-3">
-              <Gift className="w-6 h-6 text-[#206380]" /> New Donation
+              <Gift className="w-6 h-6 text-nhd-700" /> New Donation
             </h2>
             <button onClick={onClose} className="p-2 hover:bg-muted rounded-lg">
               <X className="w-5 h-5" />
@@ -1031,7 +1031,7 @@ function DonationModal({ open, onClose, onSubmit }) {
                 value={form.donor}
                 onChange={(e) => setForm({ ...form, donor: e.target.value })}
                 placeholder="e.g. John Doe"
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-[#206380]/50"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-nhd-700/50"
               />
             </div>
             <div>
@@ -1041,7 +1041,7 @@ function DonationModal({ open, onClose, onSubmit }) {
                 value={form.amount}
                 onChange={(e) => setForm({ ...form, amount: e.target.value })}
                 placeholder="e.g. 100"
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-[#206380]/50"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-nhd-700/50"
               />
             </div>
             <div>
@@ -1050,7 +1050,7 @@ function DonationModal({ open, onClose, onSubmit }) {
                 type="date"
                 value={form.date}
                 onChange={(e) => setForm({ ...form, date: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-[#206380]/50"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-nhd-700/50"
               />
             </div>
             <div>
@@ -1058,7 +1058,7 @@ function DonationModal({ open, onClose, onSubmit }) {
               <select
                 value={form.type}
                 onChange={(e) => setForm({ ...form, type: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-[#206380]/50"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-nhd-700/50"
               >
                 <option>One-time</option>
                 <option>Monthly</option>
@@ -1069,7 +1069,7 @@ function DonationModal({ open, onClose, onSubmit }) {
               <select
                 value={form.campaign}
                 onChange={(e) => setForm({ ...form, campaign: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-[#206380]/50"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-nhd-700/50"
               >
                 <option>Education Fund</option>
                 <option>Health Initiative</option>
@@ -1086,7 +1086,7 @@ function DonationModal({ open, onClose, onSubmit }) {
               <button
                 onClick={handleSubmit}
                 disabled={!form.donor || !form.amount}
-                className="px-6 py-3 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-lg font-medium hover:shadow-lg transition disabled:opacity-50 flex items-center gap-2"
+                className="px-6 py-3 bg-linear-to-r from-nhd-700 to-[#1b5666] text-white rounded-lg font-medium hover:shadow-lg transition disabled:opacity-50 flex items-center gap-2"
               >
                 <CheckCircle className="w-4 h-4" /> Create
               </button>
@@ -1152,8 +1152,8 @@ function DonationDetailsModal({ donation, onClose }) {
           onClick={(e) => e.stopPropagation()}
           className="relative w-full max-w-lg rounded-3xl bg-card shadow-2xl border border-border/50 overflow-hidden"
         >
-          {/* Gradient Header */}
-          <div className="relative bg-gradient-to-br from-[#206380] via-[#1e5a72] to-[#1b4f63] px-8 py-10 text-white">
+          {/* linear Header */}
+          <div className="relative bg-linear-to-br from-nhd-700 via-[#1e5a72] to-[#1b4f63] px-8 py-10 text-white">
             <button
               onClick={onClose}
               className="absolute top-6 right-6 p-2.5 bg-white/20 hover:bg-white/30 rounded-xl backdrop-blur-sm transition"
@@ -1274,7 +1274,7 @@ function DonationDetailsModal({ donation, onClose }) {
               </button>
               <button
                 onClick={onClose}
-                className="px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-[#206380] to-[#1b5666] rounded-xl shadow-lg hover:shadow-xl hover:brightness-110 transition-all flex items-center gap-2"
+                className="px-6 py-3 text-sm font-semibold text-white bg-linear-to-r from-nhd-700 to-[#1b5666] rounded-xl shadow-lg hover:shadow-xl hover:brightness-110 transition-all flex items-center gap-2"
               >
                 Done
               </button>
@@ -1311,7 +1311,7 @@ function EditDonationModal({ donation, onClose, onSave }) {
         >
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold flex items-center gap-3">
-              <Edit2 className="w-6 h-6 text-[#206380]" /> Edit Donation
+              <Edit2 className="w-6 h-6 text-nhd-700from-nhd-700" /> Edit Donation
             </h2>
             <button onClick={onClose} className="p-2 hover:bg-muted rounded-lg">
               <X className="w-5 h-5" />
@@ -1326,7 +1326,7 @@ function EditDonationModal({ donation, onClose, onSave }) {
                 type="text"
                 value={form.donor}
                 onChange={(e) => setForm({ ...form, donor: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-[#206380]/50"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-nhd-700from-nhd-700/50"
               />
             </div>
             <div>
@@ -1340,7 +1340,7 @@ function EditDonationModal({ donation, onClose, onSave }) {
                     amount: parseFloat(e.target.value) || 0,
                   })
                 }
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-[#206380]/50"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-nhd-700from-nhd-700/50"
               />
             </div>
             <div>
@@ -1349,7 +1349,7 @@ function EditDonationModal({ donation, onClose, onSave }) {
                 type="date"
                 value={form.date}
                 onChange={(e) => setForm({ ...form, date: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-[#206380]/50"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-nhd-700from-nhd-700/50"
               />
             </div>
             <div>
@@ -1357,7 +1357,7 @@ function EditDonationModal({ donation, onClose, onSave }) {
               <select
                 value={form.type}
                 onChange={(e) => setForm({ ...form, type: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-[#206380]/50"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-nhd-700from-nhd-700/50"
               >
                 <option>One-time</option>
                 <option>Monthly</option>
@@ -1368,7 +1368,7 @@ function EditDonationModal({ donation, onClose, onSave }) {
               <select
                 value={form.campaign}
                 onChange={(e) => setForm({ ...form, campaign: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-[#206380]/50"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-nhd-700from-nhd-700/50"
               >
                 <option>Education Fund</option>
                 <option>Health Initiative</option>
@@ -1380,7 +1380,7 @@ function EditDonationModal({ donation, onClose, onSave }) {
               <select
                 value={form.status}
                 onChange={(e) => setForm({ ...form, status: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-[#206380]/50"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-nhd-700from-nhd-700/50"
               >
                 <option>Completed</option>
                 <option>Pending</option>
@@ -1396,7 +1396,7 @@ function EditDonationModal({ donation, onClose, onSave }) {
               </button>
               <button
                 onClick={handleSubmit}
-                className="px-6 py-3 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-lg font-medium hover:shadow-lg transition flex items-center gap-2"
+                className="px-6 py-3 bg-linear-to-r from-nhd-700 to-[#1b5666] text-white rounded-lg font-medium hover:shadow-lg transition flex items-center gap-2"
               >
                 <CheckCircle className="w-4 h-4" /> Save Changes
               </button>
@@ -1443,7 +1443,7 @@ function BulkProcessConfirm({ open, onClose, onConfirm, count }) {
               </button>
               <button
                 onClick={onConfirm}
-                className="px-6 py-3 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-lg font-medium hover:shadow-lg transition"
+                className="px-6 py-3 bg-linear-to-r from-nhd-700 to-[#1b5666] text-white rounded-lg font-medium hover:shadow-lg transition"
               >
                 Confirm
               </button>

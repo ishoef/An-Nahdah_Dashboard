@@ -200,7 +200,7 @@ export default function AnnouncementsPage() {
 
   return (
     <DashboardShell>
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/80">
+      <div className="min-h-screen bg-linear-to-br from-background via-background to-background/80">
         <div className="p-6 mx-auto">
           {/* Header */}
           <motion.div
@@ -219,7 +219,7 @@ export default function AnnouncementsPage() {
               </div>
               <button
                 onClick={() => openModal()}
-                className="px-6 py-3 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-xl font-medium shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center gap-2"
+                className="px-6 py-3 bg-linear-to-r from-nhd-700 to-[#1b5666] text-white rounded-xl font-medium shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center gap-2"
               >
                 <Plus className="w-5 h-5" />
                 New Announcement
@@ -479,7 +479,7 @@ export default function AnnouncementsPage() {
                   </button>
                   <button
                     onClick={saveAnnouncement}
-                    className="px-6 py-3 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-xl font-medium hover:shadow-lg transition flex items-center gap-2"
+                    className="px-6 py-3 bg-linear-to-r from-nhd-700 to-[#1b5666] text-white rounded-xl font-medium hover:shadow-lg transition flex items-center gap-2"
                   >
                     {editingId ? (
                       <Save className="w-4 h-4" />

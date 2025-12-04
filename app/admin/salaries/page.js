@@ -183,7 +183,7 @@ export default function SalariesPage() {
 
   return (
     <DashboardShell>
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/80 p-8">
+      <div className="min-h-screen bg-linear-to-br from-background via-background to-background/80 p-8">
         {/* Header */}
         <div className="mb-8 space-y-4 animate-in fade-in slide-in-from-top-4 duration-500">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
@@ -199,7 +199,7 @@ export default function SalariesPage() {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setShowProcessModal(true)}
-                className="px-6 py-2.5 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-lg font-medium shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2"
+                className="px-6 py-2.5 bg-linear-to-r from-nhd-700 to-[#1b5666] text-white rounded-lg font-medium shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2"
               >
                 <Plus className="w-4 h-4" />
                 Process Payroll
@@ -251,14 +251,14 @@ export default function SalariesPage() {
                 placeholder="Search by instructor name..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#206380]/50 transition-all duration-200"
+                className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-nhd-700/50 transition-all duration-200"
               />
             </div>
 
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-2.5 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-[#206380]/50 transition-all duration-200"
+              className="px-4 py-2.5 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-nhd-700/50 transition-all duration-200"
             >
               <option value="all">All Status</option>
               <option value="paid">Paid</option>
@@ -268,7 +268,7 @@ export default function SalariesPage() {
             <select
               value={monthFilter}
               onChange={(e) => setMonthFilter(e.target.value)}
-              className="px-4 py-2.5 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-[#206380]/50 transition-all duration-200"
+              className="px-4 py-2.5 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-nhd-700/50 transition-all duration-200"
             >
               <option value="all">All Months</option>
               {allMonths.map((m) => (
@@ -283,7 +283,7 @@ export default function SalariesPage() {
                 onClick={() => setViewMode("table")}
                 className={`p-2.5 rounded-md transition ${
                   viewMode === "table"
-                    ? "bg-[#206380] text-white"
+                    ? "bg-nhd-700 text-white"
                     : "hover:bg-muted"
                 }`}
               >
@@ -293,7 +293,7 @@ export default function SalariesPage() {
                 onClick={() => setViewMode("grid")}
                 className={`p-2.5 rounded-md transition ${
                   viewMode === "grid"
-                    ? "bg-[#206380] text-white"
+                    ? "bg-nhd-700 text-white"
                     : "hover:bg-muted"
                 }`}
               >
@@ -315,7 +315,7 @@ export default function SalariesPage() {
                         type="checkbox"
                         checked={selectedIds.length === filteredSalaries.length}
                         onChange={toggleSelectAll}
-                        className="rounded border-border accent-[#206380]"
+                        className="rounded border-border accent-nhd-700"
                       />
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-muted-foreground">
@@ -355,7 +355,7 @@ export default function SalariesPage() {
                           type="checkbox"
                           checked={selectedIds.includes(salary.id)}
                           onChange={() => toggleSelect(salary.id)}
-                          className="rounded border-border accent-[#206380]"
+                          className="rounded border-border accent-nhd-700"
                         />
                       </td>
                       <td className="px-6 py-4 text-sm font-medium text-foreground">
@@ -416,7 +416,7 @@ export default function SalariesPage() {
               <div className="p-4 border-t border-border flex justify-end">
                 <button
                   onClick={handleBulkPay}
-                  className="px-6 py-2.5 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-lg font-medium shadow-md hover:shadow-lg transition-all flex items-center gap-2"
+                  className="px-6 py-2.5 bg-linear-to-r from-nhd-700 to-[#1b5666] text-white rounded-lg font-medium shadow-md hover:shadow-lg transition-all flex items-center gap-2"
                 >
                   <CreditCard className="w-4 h-4" />
                   Pay Selected ({selectedIds.length})
@@ -436,7 +436,7 @@ export default function SalariesPage() {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  className="rounded-2xl border border-border bg-card/50 backdrop-blur-sm p-6 hover:border-[#206380]/50 hover:shadow-lg transition-all duration-300"
+                  className="rounded-2xl border border-border bg-card/50 backdrop-blur-sm p-6 hover:border-nhd-700/50 hover:shadow-lg transition-all duration-300"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <h3 className="text-lg font-semibold text-foreground">
@@ -495,7 +495,7 @@ export default function SalariesPage() {
                     </button>
                     <button
                       onClick={() => setShowEditModal(salary)}
-                      className="flex-1 px-4 py-2 text-sm font-medium bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-lg hover:shadow-md transition flex items-center gap-2 justify-center"
+                      className="flex-1 px-4 py-2 text-sm font-medium bg-linear-to-r from-nhd-700 to-[#1b5666] text-white rounded-lg hover:shadow-md transition flex items-center gap-2 justify-center"
                     >
                       <Edit2 className="w-4 h-4" />
                       Edit
@@ -587,7 +587,7 @@ function ProcessPayrollModal({ open, onClose }) {
         >
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold flex items-center gap-3">
-              <CreditCard className="w-6 h-6 text-[#206380]" />
+              <CreditCard className="w-6 h-6 text-nhd-700" />
               Process Payroll
             </h2>
             <button onClick={onClose} className="p-2 hover:bg-muted rounded-lg">
@@ -604,7 +604,7 @@ function ProcessPayrollModal({ open, onClose }) {
                 type="month"
                 value={payrollMonth}
                 onChange={(e) => setPayrollMonth(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-[#206380]/50 transition"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-nhd-700/50 transition"
               />
             </div>
 
@@ -623,7 +623,7 @@ function ProcessPayrollModal({ open, onClose }) {
               <button
                 onClick={handleProcess}
                 disabled={!payrollMonth || loading}
-                className="px-6 py-3 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-lg font-medium hover:shadow-lg transition disabled:opacity-50 flex items-center gap-2"
+                className="px-6 py-3 bg-linear-to-r from-nhd-700 to-[#1b5666] text-white rounded-lg font-medium hover:shadow-lg transition disabled:opacity-50 flex items-center gap-2"
               >
                 {loading ? "Processing..." : "Process Now"}
               </button>
@@ -677,7 +677,7 @@ function EditSalaryModal({ salary, onClose, onSave }) {
         >
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold flex items-center gap-3">
-              <Edit2 className="w-6 h-6 text-[#206380]" />
+              <Edit2 className="w-6 h-6 text-nhd-700" />
               Edit Salary
             </h2>
             <button onClick={onClose} className="p-2 hover:bg-muted rounded-lg">
@@ -703,7 +703,7 @@ function EditSalaryModal({ salary, onClose, onSave }) {
                 type="number"
                 value={form.baseSalary}
                 onChange={(e) => handleChange(e, "baseSalary")}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-[#206380]/50 transition"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-nhd-700/50 transition"
               />
             </div>
 
@@ -715,7 +715,7 @@ function EditSalaryModal({ salary, onClose, onSave }) {
                 type="number"
                 value={form.bonus}
                 onChange={(e) => handleChange(e, "bonus")}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-[#206380]/50 transition"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-nhd-700/50 transition"
               />
             </div>
 
@@ -727,7 +727,7 @@ function EditSalaryModal({ salary, onClose, onSave }) {
                 type="number"
                 value={form.deductions}
                 onChange={(e) => handleChange(e, "deductions")}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-[#206380]/50 transition"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-nhd-700/50 transition"
               />
             </div>
 
@@ -747,7 +747,7 @@ function EditSalaryModal({ salary, onClose, onSave }) {
               <select
                 value={form.status}
                 onChange={(e) => setForm({ ...form, status: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-[#206380]/50 transition"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-nhd-700/50 transition"
               >
                 <option value="paid">Paid</option>
                 <option value="pending">Pending</option>
@@ -763,7 +763,7 @@ function EditSalaryModal({ salary, onClose, onSave }) {
               </button>
               <button
                 onClick={handleSubmit}
-                className="px-6 py-3 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-lg font-medium hover:shadow-lg transition flex items-center gap-2"
+                className="px-6 py-3 bg-linear-to-r from-nhd-700 to-[#1b5666] text-white rounded-lg font-medium hover:shadow-lg transition flex items-center gap-2"
               >
                 <CheckCircle className="w-4 h-4" />
                 Save Changes
@@ -796,7 +796,7 @@ function SalaryDetailsModal({ salary, onClose }) {
           className="relative w-full max-w-2xl bg-card rounded-3xl shadow-2xl border border-border overflow-hidden"
         >
           {/* Gradient Header */}
-          <div className="relative bg-gradient-to-br from-[#206380] via-[#1e5a72] to-[#1b4f63] px-8 py-10 text-white">
+          <div className="relative bg-linear-to-br from-nhd-700 via-[#1e5a72] to-[#1b4f63] px-8 py-10 text-white">
             <button
               onClick={onClose}
               className="absolute top-6 right-6 p-2.5 bg-white/20 hover:bg-white/30 rounded-xl backdrop-blur-sm transition"
@@ -907,7 +907,7 @@ function SalaryDetailsModal({ salary, onClose }) {
                         <span className="text-lg font-bold text-foreground">
                           Net Salary
                         </span>
-                        <span className="text-2xl font-bold text-[#206380]">
+                        <span className="text-2xl font-bold text-nhd-700">
                           ${salary.netSalary.toLocaleString()}
                         </span>
                       </div>
@@ -924,7 +924,7 @@ function SalaryDetailsModal({ salary, onClose }) {
               </div>
               <button
                 onClick={onClose}
-                className="px-8 py-3.5 bg-[#206380] text-white font-medium rounded-xl hover:bg-[#1b5666] hover:shadow-lg transition-all duration-200 flex items-center gap-2"
+                className="px-8 py-3.5 bg-nhd-700 text-white font-medium rounded-xl hover:bg-[#1b5666] hover:shadow-lg transition-all duration-200 flex items-center gap-2"
               >
                 Close
               </button>
@@ -973,7 +973,7 @@ function BulkPayConfirmModal({ open, onClose, onConfirm, count }) {
               </button>
               <button
                 onClick={onConfirm}
-                className="px-6 py-3 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-lg font-medium hover:shadow-lg transition"
+                className="px-6 py-3 bg-linear-to-r from-nhd-700 to-[#1b5666] text-white rounded-lg font-medium hover:shadow-lg transition"
               >
                 Confirm Payment
               </button>

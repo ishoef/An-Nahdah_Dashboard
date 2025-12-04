@@ -110,7 +110,7 @@ export default function ProfileDrawer({ open, onClose, user = {} }) {
             aria-labelledby="profile-drawer-title"
           >
             {/* Gradient Header */}
-            <div className="relative overflow-hidden bg-gradient-to-br from-[#206380] via-[#1e5a7a] to-[#1b5666] text-white">
+            <div className="relative overflow-hidden bg-linear-to-br from-nhd-700 via-[#1e5a7a] to-[#1b5666] text-white">
               <div className="absolute inset-0 bg-black/10" />
               <div className="relative px-8 pt-10 pb-20">
                 <button
@@ -133,7 +133,7 @@ export default function ProfileDrawer({ open, onClose, user = {} }) {
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-4xl font-bold">
+                        <div className="w-full h-full bg-linear-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-4xl font-bold">
                           {initials(user.name)}
                         </div>
                       )}
@@ -176,7 +176,7 @@ export default function ProfileDrawer({ open, onClose, user = {} }) {
             <div className="flex-1 overflow-y-auto px-8 py-8 space-y-8">
               {/* Bio */}
               {user.bio && (
-                <div className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-slate-800 dark:to-slate-900 rounded-2xl p-6 border border-blue-100 dark:border-slate-700">
+                <div className="bg-linear-to-r from-blue-50 to-cyan-50 dark:from-slate-800 dark:to-slate-900 rounded-2xl p-6 border border-blue-100 dark:border-slate-700">
                   <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
                     {user.bio}
                   </p>
@@ -208,7 +208,7 @@ export default function ProfileDrawer({ open, onClose, user = {} }) {
               {/* Contact Info */}
               <div className="space-y-5">
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-white flex items-center gap-2">
-                  <Mail className="w-5 h-5 text-[#206380]" />
+                  <Mail className="w-5 h-5 text-nhd-700" />
                   Contact Information
                 </h3>
                 <div className="bg-slate-50 dark:bg-slate-800/70 rounded-2xl p-6 space-y-5 border border-slate-200 dark:border-slate-700">
@@ -242,7 +242,7 @@ export default function ProfileDrawer({ open, onClose, user = {} }) {
                       key={i}
                       className="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-400"
                     >
-                      <div className="w-2 h-2 rounded-full bg-[#206380] mt-2 flex-shrink-0" />
+                      <div className="w-2 h-2 rounded-full bg-nhd-700 mt-2 flex-shrink-0" />
                       <span>{activity}</span>
                     </div>
                   ))}
@@ -255,7 +255,7 @@ export default function ProfileDrawer({ open, onClose, user = {} }) {
               <div className="flex flex-col sm:flex-row gap-3">
                 <button
                   onClick={() => console.log("Edit Profile")}
-                  className="flex-1 flex items-center justify-center gap-2 px-5 py-3.5 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white font-medium rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
+                  className="flex-1 flex items-center justify-center gap-2 px-5 py-3.5 bg-linear-to-r from-nhd-700 to-[#1b5666] text-white font-medium rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
                 >
                   <Edit3 className="w-4.5 h-4.5" />
                   Edit Profile
@@ -301,7 +301,7 @@ function StatCard({ icon: Icon, label, value, color }) {
   return (
     <div className="group text-center">
       <div
-        className={`w-full aspect-square rounded-2xl bg-gradient-to-br ${color} p-5 shadow-lg group-hover:shadow-xl transition-shadow`}
+        className={`w-full aspect-square rounded-2xl bg-linear-to-br ${color} p-5 shadow-lg group-hover:shadow-xl transition-shadow`}
       >
         <div className="w-full h-full rounded-xl bg-white/20 backdrop-blur-sm flex flex-col items-center justify-center text-white">
           <Icon className="w-8 h-8 mb-2" />
@@ -318,8 +318,8 @@ function StatCard({ icon: Icon, label, value, color }) {
 function InfoRow({ icon: Icon, label, value }) {
   return (
     <div className="flex items-center gap-4">
-      <div className="p-3 bg-[#206380]/10 dark:bg-[#206380]/20 rounded-xl">
-        <Icon className="w-5 h-5 text-[#206380]" />
+      <div className="p-3 bg-nhd-700/10 dark:bg-nhd-700/20 rounded-xl">
+        <Icon className="w-5 h-5 text-nhd-700" />
       </div>
       <div className="flex-1">
         <p className="text-xs text-slate-500 dark:text-slate-400">{label}</p>

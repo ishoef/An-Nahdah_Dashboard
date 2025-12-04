@@ -22,8 +22,8 @@ import {
   Plus,
   DollarSign,
   User,
-  Clock, 
-  XCircle, 
+  Clock,
+  XCircle,
 } from "lucide-react";
 
 import { motion, AnimatePresence } from "framer-motion";
@@ -264,7 +264,7 @@ export default function RevenuePage() {
 
                 <button
                   onClick={() => setShowPayoutModal(true)}
-                  className="px-4 py-2.5 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-md font-medium shadow-md hover:shadow-lg hover:brightness-105 transition-all flex items-center gap-2"
+                  className="px-4 py-2.5 bg-linear-to-r from-nhd-700 to-[#1b5666] text-white rounded-md font-medium shadow-md hover:shadow-lg hover:brightness-105 transition-all flex items-center gap-2"
                 >
                   <Plus className="w-4 h-4" />
                   Create Payout
@@ -411,7 +411,7 @@ export default function RevenuePage() {
                 </h4>
                 <button
                   onClick={() => setShowPayoutModal(true)}
-                  className="w-full px-4 py-3 rounded-md bg-gradient-to-r from-[#206380] to-[#1b5666] text-white font-medium hover:brightness-105 shadow-md transition-all flex items-center gap-3 justify-center"
+                  className="w-full px-4 py-3 rounded-md bg-linear-to-r from-nhd-700 to-[#1b5666] text-white font-medium hover:brightness-105 shadow-md transition-all flex items-center gap-3 justify-center"
                 >
                   <Plus className="w-5 h-5" /> Create New Payout
                 </button>
@@ -448,7 +448,7 @@ export default function RevenuePage() {
                       value={query}
                       onChange={(e) => setQuery(e.target.value)}
                       placeholder="Search by ID or instructor..."
-                      className="pl-10 pr-4 py-2.5 rounded-md border border-border bg-background text-sm w-64 focus:outline-none focus:ring-2 focus:ring-[#206380]/50 transition"
+                      className="pl-10 pr-4 py-2.5 rounded-md border border-border bg-background text-sm w-64 focus:outline-none focus:ring-2 focus:ring-nhd-700/50 transition"
                     />
                   </div>
 
@@ -457,7 +457,7 @@ export default function RevenuePage() {
                       onClick={() => setViewMode("table")}
                       className={`p-2 rounded-sm transition ${
                         viewMode === "table"
-                          ? "bg-[#206380] text-white"
+                          ? "bg-nhd-700 text-white"
                           : "hover:bg-muted"
                       }`}
                     >
@@ -467,7 +467,7 @@ export default function RevenuePage() {
                       onClick={() => setViewMode("grid")}
                       className={`p-2 rounded-sm transition ${
                         viewMode === "grid"
-                          ? "bg-[#206380] text-white"
+                          ? "bg-nhd-700 text-white"
                           : "hover:bg-muted"
                       }`}
                     >
@@ -600,7 +600,7 @@ function TransactionTable({
                   transactions.length > 0
                 }
                 onChange={onToggleSelectAll}
-                className="rounded border-border accent-[#206380]"
+                className="rounded border-border accent-nhd-700"
               />
             </th>
             <th className="px-6 py-4">ID</th>
@@ -622,7 +622,7 @@ function TransactionTable({
                   type="checkbox"
                   checked={selectedIds.includes(t.id)}
                   onChange={() => onToggleSelect(t.id)}
-                  className="rounded border-border accent-[#206380]"
+                  className="rounded border-border accent-nhd-700"
                 />
               </td>
               <td className="px-6 py-4 font-medium">{t.id}</td>
@@ -658,7 +658,7 @@ function TransactionTable({
         <div className="p-4 border-t border-border flex justify-end">
           <button
             onClick={onBulkPayout}
-            className="px-6 py-2.5 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-md font-medium shadow-md hover:shadow-lg transition-all flex items-center gap-2"
+            className="px-6 py-2.5 bg-linear-to-r from-nhd-700 to-[#1b5666] text-white rounded-md font-medium shadow-md hover:shadow-lg transition-all flex items-center gap-2"
           >
             <CreditCard className="w-4 h-4" />
             Process Selected Payouts ({selectedIds.length})
@@ -680,7 +680,7 @@ function TransactionGrid({ transactions, onViewDetails, onEdit }) {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="rounded-2xl border border-border bg-card/50 backdrop-blur-sm p-6 hover:border-[#206380]/50 hover:shadow-lg transition-all"
+            className="rounded-2xl border border-border bg-card/50 backdrop-blur-sm p-6 hover:border-nhd-700/50 hover:shadow-lg transition-all"
           >
             <div className="flex items-start justify-between mb-4">
               <h3 className="text-lg font-semibold text-foreground">
@@ -708,7 +708,7 @@ function TransactionGrid({ transactions, onViewDetails, onEdit }) {
               </button>
               <button
                 onClick={() => onEdit(t)}
-                className="flex-1 px-4 py-2 text-sm font-medium bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-md hover:shadow-md transition flex items-center gap-2 justify-center"
+                className="flex-1 px-4 py-2 text-sm font-medium bg-linear-to-r from-nhd-700 to-[#1b5666] text-white rounded-md hover:shadow-md transition flex items-center gap-2 justify-center"
               >
                 <Edit2 className="w-4 h-4" /> Edit
               </button>
@@ -764,7 +764,7 @@ function PayoutModal({ open, onClose, onSubmit }) {
         >
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold flex items-center gap-3">
-              <CreditCard className="w-6 h-6 text-[#206380]" /> Create Payout
+              <CreditCard className="w-6 h-6 text-nhd-700" /> Create Payout
             </h2>
             <button onClick={onClose} className="p-2 hover:bg-muted rounded-lg">
               <X className="w-5 h-5" />
@@ -782,7 +782,7 @@ function PayoutModal({ open, onClose, onSubmit }) {
                   setForm({ ...form, instructor: e.target.value })
                 }
                 placeholder="e.g. Umar Ali"
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-[#206380]/50"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-nhd-700/50"
               />
             </div>
             <div>
@@ -792,7 +792,7 @@ function PayoutModal({ open, onClose, onSubmit }) {
                 value={form.amount}
                 onChange={(e) => setForm({ ...form, amount: e.target.value })}
                 placeholder="e.g. 1200"
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-[#206380]/50"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-nhd-700/50"
               />
             </div>
             <div>
@@ -801,7 +801,7 @@ function PayoutModal({ open, onClose, onSubmit }) {
                 type="date"
                 value={form.date}
                 onChange={(e) => setForm({ ...form, date: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-[#206380]/50"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-nhd-700/50"
               />
             </div>
             <div className="flex justify-end gap-3 pt-4 border-t border-border">
@@ -814,7 +814,7 @@ function PayoutModal({ open, onClose, onSubmit }) {
               <button
                 onClick={handleSubmit}
                 disabled={!form.instructor || !form.amount}
-                className="px-6 py-3 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-lg font-medium hover:shadow-lg transition disabled:opacity-50 flex items-center gap-2"
+                className="px-6 py-3 bg-linear-to-r from-nhd-700 to-[#1b5666] text-white rounded-lg font-medium hover:shadow-lg transition disabled:opacity-50 flex items-center gap-2"
               >
                 <CheckCircle className="w-4 h-4" /> Create Payout
               </button>
@@ -878,7 +878,7 @@ function TransactionDetailsModal({ transaction, onClose }) {
           className="relative w-full max-w-2xl bg-card rounded-3xl shadow-2xl border border-border overflow-hidden"
         >
           {/* Gradient Header */}
-          <div className="relative bg-gradient-to-br from-[#206380] via-[#1e5a72] to-[#1b4f63] px-8 py-10 text-white">
+          <div className="relative bg-linear-to-br from-nhd-700 via-[#1e5a72] to-[#1b4f63] px-8 py-10 text-white">
             {/* Close Button */}
             <button
               onClick={onClose}
@@ -931,7 +931,7 @@ function TransactionDetailsModal({ transaction, onClose }) {
                     Transaction Date
                   </p>
                   <p className="text-lg font-medium text-foreground mt-1 flex items-center gap-2">
-                    <Calendar className="w-4 h-4 text-[#206380]" />
+                    <Calendar className="w-4 h-4 text-nhd-700" />
                     {formattedDate}
                   </p>
                 </div>
@@ -956,7 +956,7 @@ function TransactionDetailsModal({ transaction, onClose }) {
                       <span className="text-muted-foreground">
                         Transaction Amount
                       </span>
-                      <span className="text-2xl font-bold text-[#206380]">
+                      <span className="text-2xl font-bold text-nhd-700">
                         {formatCurrency(transaction.amount)}
                       </span>
                     </div>
@@ -979,7 +979,7 @@ function TransactionDetailsModal({ transaction, onClose }) {
                           <span className="text-lg font-bold text-foreground">
                             Net Amount
                           </span>
-                          <span className="text-2xl font-bold text-[#206380]">
+                          <span className="text-2xl font-bold text-nhd-700">
                             {formatCurrency(transaction.netAmount)}
                           </span>
                         </div>
@@ -997,7 +997,7 @@ function TransactionDetailsModal({ transaction, onClose }) {
               </div>
               <button
                 onClick={onClose}
-                className="px-8 py-3.5 bg-[#206380] text-white font-medium rounded-xl hover:bg-[#1b5666] hover:shadow-lg transition-all duration-200 flex items-center gap-2"
+                className="px-8 py-3.5 bg-nhd-700 text-white font-medium rounded-xl hover:bg-[#1b5666] hover:shadow-lg transition-all duration-200 flex items-center gap-2"
               >
                 Close
               </button>
@@ -1035,7 +1035,7 @@ function EditTransactionModal({ transaction, onClose, onSave }) {
         >
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold flex items-center gap-3">
-              <Edit2 className="w-6 h-6 text-[#206380]" /> Edit Transaction
+              <Edit2 className="w-6 h-6 text-nhd-700" /> Edit Transaction
             </h2>
             <button onClick={onClose} className="p-2 hover:bg-muted rounded-lg">
               <X className="w-5 h-5" />
@@ -1052,7 +1052,7 @@ function EditTransactionModal({ transaction, onClose, onSave }) {
                 onChange={(e) =>
                   setForm({ ...form, instructor: e.target.value })
                 }
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-[#206380]/50"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-nhd-700/50"
               />
             </div>
             <div>
@@ -1063,7 +1063,7 @@ function EditTransactionModal({ transaction, onClose, onSave }) {
                 onChange={(e) =>
                   setForm({ ...form, amount: parseFloat(e.target.value) || 0 })
                 }
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-[#206380]/50"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-nhd-700/50"
               />
             </div>
             <div>
@@ -1072,7 +1072,7 @@ function EditTransactionModal({ transaction, onClose, onSave }) {
                 type="date"
                 value={form.date}
                 onChange={(e) => setForm({ ...form, date: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-[#206380]/50"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-nhd-700/50"
               />
             </div>
             <div>
@@ -1080,7 +1080,7 @@ function EditTransactionModal({ transaction, onClose, onSave }) {
               <select
                 value={form.status}
                 onChange={(e) => setForm({ ...form, status: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-[#206380]/50"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-nhd-700/50"
               >
                 <option value="Paid">Paid</option>
                 <option value="Pending">Pending</option>
@@ -1096,7 +1096,7 @@ function EditTransactionModal({ transaction, onClose, onSave }) {
               </button>
               <button
                 onClick={handleSubmit}
-                className="px-6 py-3 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-lg font-medium hover:shadow-lg transition flex items-center gap-2"
+                className="px-6 py-3 bg-linear-to-r from-nhd-700 to-[#1b5666] text-white rounded-lg font-medium hover:shadow-lg transition flex items-center gap-2"
               >
                 <CheckCircle className="w-4 h-4" /> Save Changes
               </button>
@@ -1143,7 +1143,7 @@ function BulkPayoutConfirm({ open, onClose, onConfirm, count }) {
               </button>
               <button
                 onClick={onConfirm}
-                className="px-6 py-3 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-lg font-medium hover:shadow-lg transition"
+                className="px-6 py-3 bg-linear-to-r from-nhd-700 to-[#1b5666] text-white rounded-lg font-medium hover:shadow-lg transition"
               >
                 Confirm
               </button>

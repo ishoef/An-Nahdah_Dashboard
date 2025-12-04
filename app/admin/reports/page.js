@@ -216,7 +216,7 @@ export default function ReportsPage() {
 
   return (
     <DashboardShell>
-      <div className="min-h-screen p-8 bg-gradient-to-br from-background via-background to-background/80">
+      <div className="min-h-screen p-8 bg-linear-to-br from-background via-background to-background/80">
         {/* Header */}
         <div className="mb-6 mx-auto">
           <div className="flex items-start justify-between gap-4">
@@ -338,7 +338,7 @@ export default function ReportsPage() {
                 >
                   <div className="flex gap-4">
                     <div
-                      className={`w-14 h-14 rounded-lg bg-gradient-to-br ${r.color} flex items-center justify-center text-white shadow-md flex-shrink-0`}
+                      className={`w-14 h-14 rounded-lg bg-linear-to-br ${r.color} flex items-center justify-center text-white shadow-md flex-shrink-0`}
                     >
                       <Icon className="w-7 h-7" />
                     </div>

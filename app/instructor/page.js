@@ -147,7 +147,7 @@ function StatCard({ stat, index }) {
       className="group relative overflow-hidden rounded-2xl border border-border bg-card/50 p-6 transition-all duration-300 hover:border-primary/50 hover:shadow-xl hover:-translate-y-1 backdrop-blur-sm animate-in fade-in slide-in-from-bottom-4"
       style={{ animationDelay: `${index * 50}ms` }}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute inset-0 bg-linear-to-br from-transparent via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
       <div className="relative flex items-center justify-between">
         <div className="space-y-3">
@@ -176,14 +176,14 @@ function StatCard({ stat, index }) {
         </div>
 
         <div
-          className={`w-14 h-14 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center text-white shadow-lg group-hover:shadow-2xl group-hover:scale-110 transition-all duration-300`}
+          className={`w-14 h-14 rounded-xl bg-linear-to-br ${stat.color} flex items-center justify-center text-white shadow-lg group-hover:shadow-2xl group-hover:scale-110 transition-all duration-300`}
         >
           <Icon className="w-7 h-7" />
         </div>
       </div>
 
       <div
-        className={`absolute bottom-0 left-0 h-1 bg-gradient-to-r ${stat.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
+        className={`absolute bottom-0 left-0 h-1 bg-linear-to-r ${stat.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
         style={{ width: "0%", animation: "expandWidth 0.3s ease-out forwards" }}
       />
     </div>
@@ -247,12 +247,12 @@ export default function InstructorOverviewPage() {
 
   return (
     <DashboardShell>
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/80 p-8">
+      <div className="min-h-screen bg-linear-to-br from-background via-background to-background/80 p-8">
         {/* Header with animation */}
         <div className="mb-10 space-y-2 animate-in fade-in slide-in-from-top-4 duration-500">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10">
+              <div className="p-3 rounded-xl bg-linear-to-br from-primary/20 to-primary/10">
                 <Activity className="w-6 h-6 text-primary" />
               </div>
               <div>
@@ -269,7 +269,7 @@ export default function InstructorOverviewPage() {
             </div>
 
             <div className="flex items-center gap-3">
-              <button className="px-6 py-2.5 bg-gradient-to-r from-primary to-primary/90 text-primary-foreground rounded-lg font-medium shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2">
+              <button className="px-6 py-2.5 bg-linear-to-r from-primary to-primary/90 text-primary-foreground rounded-lg font-medium shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2">
                 <Zap className="w-4 h-4" />
                 Create Class
               </button>
@@ -296,7 +296,7 @@ export default function InstructorOverviewPage() {
               className="group relative overflow-hidden rounded-2xl border border-border bg-card/50 p-8 backdrop-blur-sm animate-in fade-in slide-in-from-bottom-4 transition-all duration-300 hover:border-primary/50 hover:shadow-lg"
               style={{ animationDelay: "200ms" }}
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-linear-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
               <div className="relative">
                 <div className="flex items-center justify-between mb-6">
@@ -351,7 +351,7 @@ export default function InstructorOverviewPage() {
                     </div>
                     <div className="h-2.5 bg-muted rounded-full overflow-hidden">
                       <div
-                        className={`h-full rounded-full bg-gradient-to-r ${course.color} transition-all duration-300 group-hover/course:shadow-lg`}
+                        className={`h-full rounded-full bg-linear-to-r ${course.color} transition-all duration-300 group-hover/course:shadow-lg`}
                         style={{ width: `${course.progress}%` }}
                       />
                     </div>

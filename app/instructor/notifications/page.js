@@ -228,10 +228,11 @@ export default function InstructorNotificationsPage() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.98 }}
                     className={`group relative bg-card border ${
-                      notif.read ? "border-border" : "border-nhd-700/30 border-l-5 border-l-nhd-700"
+                      notif.read
+                        ? "border-border"
+                        : "border-nhd-700/30 border-l-5 border-l-nhd-700"
                     } rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300`}
                   >
-
                     <div className="flex items-start gap-5">
                       <div
                         className={`p-3 rounded-xl ${
@@ -259,7 +260,7 @@ export default function InstructorNotificationsPage() {
                         >
                           {notif.title}
                           {!notif.read && (
-                            <span className="ml-3 inline-block px-2.5 py-0.5 bg-[#206380] text-white text-xs rounded-full font-medium">
+                            <span className="ml-3 inline-block px-2.5 py-0.5 bg-nhd-700 text-white text-xs rounded-full font-medium">
                               New
                             </span>
                           )}
@@ -277,9 +278,9 @@ export default function InstructorNotificationsPage() {
                         {!notif.read && (
                           <button
                             onClick={() => markAsRead(notif.id)}
-                            className="p-2.5 hover:bg-[#206380]/10 rounded-lg transition"
+                            className="p-2.5 hover:bg-nhd-700/10 rounded-lg transition"
                           >
-                            <Check className="w-4.5 h-4.5 text-[#206380]" />
+                            <Check className="w-4.5 h-4.5 text-nhd-700" />
                           </button>
                         )}
                         <button

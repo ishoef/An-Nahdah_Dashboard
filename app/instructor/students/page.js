@@ -177,7 +177,7 @@ export default function InstructorStudentsPage() {
 
   return (
     <DashboardShell>
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/80">
+      <div className="min-h-screen bg-linear-to-br from-background via-background to-background/80">
         <div className="p-6 lg:p-8 mx-auto relative">
           {/* Success Toast */}
           <AnimatePresence>
@@ -211,7 +211,7 @@ export default function InstructorStudentsPage() {
               </div>
               <button
                 onClick={exportToCSV}
-                className="px-6 py-3 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-xl font-medium shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center gap-2"
+                className="px-6 py-3 bg-linear-to-r from-nhd-700 to-[#1b5666] text-white rounded-xl font-medium shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center gap-2"
               >
                 <Download className="w-5 h-5" />
                 Export CSV
@@ -231,7 +231,7 @@ export default function InstructorStudentsPage() {
                     {filteredStudents.length}
                   </p>
                 </div>
-                <Users className="w-12 h-12 text-[#206380]/70" />
+                <Users className="w-12 h-12 text-nhd-700/70" />
               </div>
             </div>
             <div className="bg-card/70 backdrop-blur-sm border border-border rounded-2xl p-6">
@@ -356,7 +356,7 @@ export default function InstructorStudentsPage() {
                     {/* Your original card content - 100% unchanged */}
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center flex-shrink-0">
+                        <div className="w-12 h-12 rounded-full bg-linear-to-br from-primary/20 to-primary/10 flex items-center justify-center flex-shrink-0">
                           <span className="text-sm font-bold text-primary">
                             {student.name
                               .split(" ")
@@ -412,7 +412,7 @@ export default function InstructorStudentsPage() {
                       </div>
                       <div className="h-2 bg-muted rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-gradient-to-r from-primary to-primary/80 transition-all duration-300 group-hover/student:shadow-lg"
+                          className="h-full bg-linear-to-r from-primary to-primary/80 transition-all duration-300 group-hover/student:shadow-lg"
                           style={{ width: `${student.completionRate}%` }}
                         />
                       </div>
@@ -483,7 +483,7 @@ export default function InstructorStudentsPage() {
                       >
                         <td className="px-6 py-5">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center text-xs font-bold text-primary">
+                            <div className="w-10 h-10 rounded-full bg-linear-to-br from-primary/20 to-primary/10 flex items-center justify-center text-xs font-bold text-primary">
                               {student.name
                                 .split(" ")
                                 .map((n) => n[0])
@@ -517,7 +517,7 @@ export default function InstructorStudentsPage() {
                             </span>
                             <div className="w-20 h-2 bg-muted rounded-full overflow-hidden">
                               <div
-                                className="h-full bg-gradient-to-r from-primary to-primary/80"
+                                className="h-full bg-linear-to-r from-primary to-primary/80"
                                 style={{ width: `${student.completionRate}%` }}
                               />
                             </div>
@@ -594,7 +594,7 @@ export default function InstructorStudentsPage() {
                 >
                   <div className="flex items-center justify-between mb-6">
                     <h2 className="text-2xl font-bold flex items-center gap-3">
-                      <Award className="w-7 h-7 text-[#206380]" />
+                      <Award className="w-7 h-7 text-nhd-700" />
                       Grade Student
                     </h2>
                     <button
@@ -607,7 +607,7 @@ export default function InstructorStudentsPage() {
 
                   <div className="space-y-5">
                     <div className="flex items-center gap-4 p-4 bg-muted/30 rounded-xl">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#206380] to-[#1b5666] flex items-center justify-center text-white font-bold">
+                      <div className="w-12 h-12 rounded-full bg-linear-to-br from-nhd-700 to-[#1b5666] flex items-center justify-center text-white font-bold">
                         {gradeModal.name
                           .split(" ")
                           .map((n) => n[0])
@@ -630,7 +630,7 @@ export default function InstructorStudentsPage() {
                         onChange={(e) =>
                           setGradeForm({ ...gradeForm, course: e.target.value })
                         }
-                        className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-[#206380]/30 focus:outline-none"
+                        className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-nhd-700/30 focus:outline-none"
                       >
                         <option value="">Choose course...</option>
                         {gradeModal.courses.map((c) => (
@@ -654,7 +654,7 @@ export default function InstructorStudentsPage() {
                           setGradeForm({ ...gradeForm, score: e.target.value })
                         }
                         placeholder="e.g. 95"
-                        className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-[#206380]/30 focus:outline-none"
+                        className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-nhd-700/30 focus:outline-none"
                       />
                     </div>
 
@@ -672,7 +672,7 @@ export default function InstructorStudentsPage() {
                           })
                         }
                         placeholder="Great effort! Keep practicing your makharij..."
-                        className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-[#206380]/30 focus:outline-none resize-none"
+                        className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-nhd-700/30 focus:outline-none resize-none"
                       />
                     </div>
 
@@ -686,7 +686,7 @@ export default function InstructorStudentsPage() {
                       <button
                         onClick={submitGrade}
                         disabled={!gradeForm.score || !gradeForm.course}
-                        className="px-6 py-3 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-xl font-medium hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                        className="px-6 py-3 bg-linear-to-r from-nhd-700 to-[#1b5666] text-white rounded-xl font-medium hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                       >
                         <Send className="w-4 h-4" />
                         Submit Grade
@@ -717,7 +717,7 @@ export default function InstructorStudentsPage() {
                 >
                   <div className="flex items-center justify-between mb-6">
                     <h2 className="text-2xl font-bold flex items-center gap-3">
-                      <MessageSquare className="w-7 h-7 text-[#206380]" />
+                      <MessageSquare className="w-7 h-7 text-nhd-700" />
                       Send Message
                     </h2>
                     <button
@@ -730,7 +730,7 @@ export default function InstructorStudentsPage() {
 
                   <div className="space-y-5">
                     <div className="flex items-center gap-4 p-4 bg-muted/30 rounded-xl">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#206380] to-[#1b5666] flex items-center justify-center text-white font-bold">
+                      <div className="w-12 h-12 rounded-full bg-linear-to-br from-nhd-700 to-[#1b5666] flex items-center justify-center text-white font-bold">
                         {messageModal.name
                           .split(" ")
                           .map((n) => n[0])
@@ -758,7 +758,7 @@ export default function InstructorStudentsPage() {
                           })
                         }
                         placeholder="e.g. Great progress in Tajweed!"
-                        className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-[#206380]/30 focus:outline-none"
+                        className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-nhd-700/30 focus:outline-none"
                       />
                     </div>
 
@@ -776,7 +776,7 @@ export default function InstructorStudentsPage() {
                           })
                         }
                         placeholder="Assalamu Alaikum dear student..."
-                        className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-[#206380]/30 focus:outline-none resize-none"
+                        className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-nhd-700/30 focus:outline-none resize-none"
                       />
                     </div>
 
@@ -793,7 +793,7 @@ export default function InstructorStudentsPage() {
                           !messageForm.subject.trim() ||
                           !messageForm.body.trim()
                         }
-                        className="px-6 py-3 bg-gradient-to-r from-[#206380] to-[#1b5666] text-white rounded-xl font-medium hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                        className="px-6 py-3 bg-linear-to-r from-nhd-700 to-[#1b5666] text-white rounded-xl font-medium hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                       >
                         <Send className="w-4 h-4" />
                         Send Message
