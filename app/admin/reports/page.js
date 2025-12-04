@@ -320,7 +320,7 @@ export default function ReportsPage() {
                       .slice(0, 10)}.csv`
                   )
                 }
-                className="px-3 py-2 rounded-md border border-border bg-white"
+                className=" flex items-center gap-2 px-3 py-2 rounded-md border border-border bg-white"
               >
                 <Download className="w-4 h-4" /> Export Filters
               </button>

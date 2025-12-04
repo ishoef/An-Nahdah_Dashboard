@@ -14,6 +14,7 @@ import {
   ChevronRight,
   CircleDollarSign,
   Component,
+  HandCoins,
 } from "lucide-react";
 import Logo from "../ui/Logo";
 
@@ -92,6 +93,12 @@ const AdminSidebar = () => {
           label: "Course Profitability",
           href: "/admin/course-profitability",
           description: "Revenue minus all course costs",
+        },
+        {
+          icon: HandCoins,
+          label: "Donations",
+          href: "/admin/donations",
+          description: "Manage donations",
         },
       ],
     },

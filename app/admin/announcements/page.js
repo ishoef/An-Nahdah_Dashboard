@@ -201,7 +201,7 @@ export default function AnnouncementsPage() {
   return (
     <DashboardShell>
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/80">
-        <div className="p-6 lg:p-8 max-w-7xl mx-auto">
+        <div className="p-6 mx-auto">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -228,7 +228,8 @@ export default function AnnouncementsPage() {
           </motion.div>
 
           {/* Toolbar */}
-          <div className="mb-6 flex flex-col lg:flex-row gap-4">
+          <div className="mb-6 flex flex-col lg:flex-row lg:justify-between gap-4">
+            {/* Search bar */}
             <div className="relative flex-1 max-w-md">
               <Search className="absolute left-3 top-3.5 w-5 h-5 text-muted-foreground" />
               <input
