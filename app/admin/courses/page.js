@@ -234,10 +234,21 @@ export default function CoursesPage() {
   };
 
   const addCourse = (newCourse) => {
-    const id = Math.max(...courses.map((c) => c.id)) + 1;
+    const id =
+      courses.length > 0 ? Math.max(...courses.map((c) => c.id)) + 1 : 1;
+
     setCourses([
       ...courses,
-      { ...newCourse, id, revenue: 0, students: 0, rating: 0, progress: 0 },
+      {
+        ...newCourse,
+        id,
+        revenue: 0,
+        students: 0,
+        rating: 0,
+        progress: 0,
+        createdDate: new Date().toISOString().split("T")[0],
+        status: newCourse.status || "draft",
+      },
     ]);
     setShowAddModal(false);
   };
@@ -300,7 +311,7 @@ export default function CoursesPage() {
           <div className="flex items-center gap-4">
             <button
               onClick={() => setShowAddModal(true)}
-              className="px-4 py-2.5 bg-linear-to-r from-nhd-700 to-[#1b5666] text-white rounded-md font-medium shadow-md hover:shadow-lg transition-all flex items-center gap-2"
+              className="px-4 py-2.5 bg-gradient-to-r from-nhd-700 to-[#1b5666] text-white rounded-md font-medium shadow-md hover:shadow-lg transition-all flex items-center gap-2"
             >
               <Plus className="w-4 h-4" /> Create Course
             </button>
@@ -859,7 +870,10 @@ function AddEditCourseModal({ course, onClose, onSave }) {
                 type="number"
                 value={form.price}
                 onChange={(e) =>
-                  setForm({ ...form, price: parseFloat(e.target.value) || 0 })
+                  setForm({
+                    ...form,
+                    price: parseFloat(e.target.value) || 0,
+                  })
                 }
                 className="w-full px-4 py-3 border border-border rounded-lg"
               />
@@ -898,7 +912,7 @@ function AddEditCourseModal({ course, onClose, onSave }) {
   );
 }
 
-// View Modal, Delete Confirm, Bulk Confirm (same as previous patterns)
+// View Modal
 function ViewCourseModal({ course, onClose }) {
   if (!course) return null;
   return (
@@ -954,6 +968,7 @@ function ViewCourseModal({ course, onClose }) {
   );
 }
 
+// Delete Confirm
 function DeleteConfirm({ id, onClose, onConfirm }) {
   return (
     <AnimatePresence>
@@ -994,6 +1009,7 @@ function DeleteConfirm({ id, onClose, onConfirm }) {
   );
 }
 
+// Bulk Confirm
 function BulkConfirm({ action, count, onClose, onConfirm }) {
   const title =
     action === "delete"
