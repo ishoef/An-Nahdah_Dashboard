@@ -146,6 +146,44 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* --------- ADD THIS BLOCK (for html2canvas safety) ---------- */
+.certificate-safe-colors {
+  /* Restrict the modern color functions only inside the certificate
+     so html2canvas sees standard sRGB colors there. */
+  --background: #ffffff;
+  --foreground: #111827;
+  --card: #ffffff;
+  --card-foreground: #111827;
+  --popover: #ffffff;
+  --popover-foreground: #111827;
+  --primary: #206380;
+  --primary-foreground: #ffffff;
+  --secondary: #e5e7eb;
+  --secondary-foreground: #111827;
+  --muted: #e5e7eb;
+  --muted-foreground: #6b7280;
+  --accent: #e5e7eb;
+  --accent-foreground: #111827;
+  --destructive: #ef4444;
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: #206380;
+  --chart-1: #206380;
+  --chart-2: #3b82f6;
+  --chart-3: #10b981;
+  --chart-4: #f59e0b;
+  --chart-5: #ef4444;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #111827;
+  --sidebar-primary: #206380;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e5e7eb;
+  --sidebar-accent-foreground: #111827;
+  --sidebar-border: #e5e7eb;
+  --sidebar-ring: #206380;
+}
+/* ------------------------------------------------------------ */
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

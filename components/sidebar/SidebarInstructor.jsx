@@ -62,6 +62,12 @@ const InstructorSidebar = () => {
           href: "/instructor/studentProgress",
           description: "Track student progress",
         },
+        {
+          icon: LayoutDashboard,
+          label: "Grading",
+          href: "/instructor/grading",
+          description: "Grade student assignments",
+        },
       ],
     },
     {
